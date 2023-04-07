@@ -402,7 +402,7 @@ Creates and returns a new spot.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: '/spot/create'
+  * URL: '/spot'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -477,7 +477,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: '/spot/create/:id'
+  * URL: '/spot/:id'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -843,7 +843,7 @@ Create and return a new image for a review specified by id.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: POST
-  * URL: '/image/:id'
+  * URL: '/review/image/:id'
   * Headers:
     * Content-Type: application/json
   * Body:
