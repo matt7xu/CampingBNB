@@ -1,4 +1,4 @@
-# `<AirBnB Clone>`
+# `AirBnB Clone`
 
 ## Database Schema Design
 
@@ -93,7 +93,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * URL: '/uses/login'
+  * URL: '/users/login'
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -762,7 +762,7 @@ Create and return a new review for a spot specified by id.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: 'spots/:id/reviews'
+  * URL: '/spots/:id/reviews'
   * Headers:
     * Content-Type: application/json
   * Body:
