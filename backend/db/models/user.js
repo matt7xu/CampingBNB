@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     email: {
-      tyoe: DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [3, 256],
@@ -50,6 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
-  
+
   return User;
 };
