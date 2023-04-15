@@ -1,4 +1,5 @@
 "use strict";
+/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -27,6 +28,14 @@ module.exports = {
       hashedPassword: {
         type: Sequelize.STRING.BINARY,
         allowNull: false
+      },
+      firstName: {
+        type: Sequelize.STRING(256),
+        allowNull: false,
+      },
+      lastName: {
+        type: Sequelize.STRING(256),
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
