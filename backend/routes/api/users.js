@@ -51,7 +51,11 @@ const validateLogin = [
 router.get(
   '/owned/spots',
   async (req, res) => {
+    const ownerId = req.user.id;
     const spots = await Spot.findAll({
+      where: {
+        ownerId
+      },
       attributes: {
         include: [
           [
@@ -72,34 +76,34 @@ router.get(
       group: "Spot.id"
     });
 
-let ret = [];
+    let ret = [];
 
-spots.forEach(spot=>{
+    spots.forEach(spot => {
 
-  spot = spot.toJSON();
-  console.log(spot.avgRating)
-  let each = {};
-  each.id = spot.id;
-  each.ownerId = spot.ownerId;
-  each.address = spot.address;
-  each.city = spot.city;
-  each.state = spot.state;
-  each.country = spot.country;
-  each.lat = spot.lat;
-  each.lng = spot.lng;
-  each.name = spot.name;
-  each.description = spot.description;
-  each.price = spot.price;
-  each.createdAt = spot.createdAt;
-  each.updatedAt = spot.updatedAt;
-  each.avgRating = spot.avgRating;
-  if(spot.Spotimages[0]){
-    each.previewImage = spot.Spotimages[0].url
-  }
+      spot = spot.toJSON();
+      //console.log(spot.avgRating)
+      let each = {};
+      each.id = spot.id;
+      each.ownerId = spot.ownerId;
+      each.address = spot.address;
+      each.city = spot.city;
+      each.state = spot.state;
+      each.country = spot.country;
+      each.lat = spot.lat;
+      each.lng = spot.lng;
+      each.name = spot.name;
+      each.description = spot.description;
+      each.price = spot.price;
+      each.createdAt = spot.createdAt;
+      each.updatedAt = spot.updatedAt;
+      each.avgRating = spot.avgRating;
+      if (spot.Spotimages[0]) {
+        each.previewImage = spot.Spotimages[0].url
+      }
 
 
-  ret.push(each)
-})
+      ret.push(each)
+    })
     res.json({
       Spots: ret
     });
