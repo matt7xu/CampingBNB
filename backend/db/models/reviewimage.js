@@ -15,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Reviewimage.init({
-    // id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   primaryKey: true,
-    //   autoIncrement: true
-    // },
-    reviewId: DataTypes.INTEGER,
-    spotId: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    // reviewId: DataTypes.INTEGER,
+    // spotId: DataTypes.INTEGER,
     url: DataTypes.STRING
   }, {
     sequelize,

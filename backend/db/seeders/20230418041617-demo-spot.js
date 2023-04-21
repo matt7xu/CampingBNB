@@ -36,7 +36,7 @@ module.exports = {
       },
       {
         id: 2,
-        ownerId: 2,
+        ownerId: 1,
         address: "123 B St",
         city: "San Francisco",
         state: "California",

@@ -27,8 +27,8 @@ module.exports = {
       },
       {
         id:2,
-        reviewId: 2,
-        spotId: 2,
+        reviewId: 1,
+        spotId: 1,
         url: 'image url'
       },
       {
