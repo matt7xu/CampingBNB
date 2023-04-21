@@ -79,9 +79,7 @@ router.get(
     let ret = [];
 
     spots.forEach(spot => {
-
       spot = spot.toJSON();
-      //console.log(spot.avgRating)
       let each = {};
       each.id = spot.id;
       each.ownerId = spot.ownerId;
@@ -100,8 +98,6 @@ router.get(
       if (spot.Spotimages[0]) {
         each.previewImage = spot.Spotimages[0].url
       }
-
-
       ret.push(each)
     })
     res.json({
