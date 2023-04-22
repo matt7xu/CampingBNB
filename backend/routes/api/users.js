@@ -1,6 +1,8 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
+//const cors = require('cors');
+//const { environment } = require('../../config');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User, Spot, Review, Spotimage, sequelize } = require('../../db/models');
@@ -9,6 +11,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
+
+//const isProduction = environment === 'production';
 
 const validateSignup = [
   check('email')
@@ -95,9 +99,13 @@ router.get(
       each.createdAt = spot.createdAt;
       each.updatedAt = spot.updatedAt;
       each.avgRating = spot.avgRating;
-      if (spot.Spotimages[0]) {
-        each.previewImage = spot.Spotimages[0].url
-      }
+      let image = '';
+      spot.Spotimages.forEach(eachImage => {
+        if (eachImage.preview) {
+          image += eachImage.url;
+        }
+      });
+      each.previewImage = image;
       ret.push(each)
     })
     res.json({
@@ -130,7 +138,7 @@ router.get(
 router.post(
   '/',
   validateSignup,
-  async (req, res) => {
+  async (req, res, next) => {
     const { firstName, lastName, email, password, username } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
     try {
@@ -138,19 +146,13 @@ router.post(
     } catch (e) {
       const err = new Error('User already exists');
       err.status = 403;
-      err.title = 'SignUp failed';
-      err.errors = "User with that email already exists";
-      throw err;
+      if(e.errors[0].path === 'email'){
+        err.errors = "User with that email already exists";
+      } else {
+        err.errors = "User with that username already exists";
+      }
+      return next(err);
     }
-
-    // if (!user) {
-    //   const err = new Error('User already exists');
-    //   err.status = 403;
-    //   err.title = 'SignUp failed';
-    //   //err.errors = { credential: 'The provided credentials were invalid.' };
-    //   return next(err);
-    // }
-
 
     const safeUser = {
       id: user.id,
@@ -188,7 +190,6 @@ router.post(
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
       const err = new Error('Invalid credentials');
       err.status = 401;
-      err.title = 'Login failed';
       //err.errors = { credential: 'The provided credentials were invalid.' };
       return next(err);
     }
@@ -218,5 +219,18 @@ router.delete(
     return res.json({ message: 'success' });
   }
 );
+
+// Error formatter
+router.use((err, _req, res, _next) => {
+  res.status(err.status || 500);
+  console.error(err);
+  res.json({
+    //title: err.title || 'Server Error',
+    message: err.message,
+    statusCode: err.status,
+    errors: [err.errors]
+    //stack: isProduction ? null : err.stack
+  });
+});
 
 module.exports = router;

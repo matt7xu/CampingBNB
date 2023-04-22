@@ -10,50 +10,50 @@ const router = express.Router();
 
 const validateSpot = [
   check('address')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("Street address is required"),
-check('city')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("City is required"),
-check('state')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("State is required"),
-check('country')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("Country is required"),
-check('lat')
-  .exists({ checkFalsy: true })
-  .isDecimal()
-  .notEmpty()
-  .withMessage("Latitude is not valid"),
-check('lng')
-  .exists({ checkFalsy: true })
-  .isDecimal()
-  .notEmpty()
-  .withMessage("Longitude is not valid"),
-check('name')
-  .isLength({ max: 50 })
-  .withMessage("Name must be less than 50 characters"),
-check('description')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("Description is required"),
-check('price')
-  .exists({ checkFalsy: true })
-  .notEmpty()
-  .withMessage("Price per day is required"),
-handleValidationErrors
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Street address is required"),
+  check('city')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("City is required"),
+  check('state')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("State is required"),
+  check('country')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Country is required"),
+  check('lat')
+    .exists({ checkFalsy: true })
+    .isDecimal()
+    .notEmpty()
+    .withMessage("Latitude is not valid"),
+  check('lng')
+    .exists({ checkFalsy: true })
+    .isDecimal()
+    .notEmpty()
+    .withMessage("Longitude is not valid"),
+  check('name')
+    .isLength({ max: 50 })
+    .withMessage("Name must be less than 50 characters"),
+  check('description')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Description is required"),
+  check('price')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Price per day is required"),
+  handleValidationErrors
 ];
 
 
 //Get details of a Spot from an id
 router.get(
   '/:id',
-  async (req, res) => {
+  async (req, res, next) => {
     const id = +req.params.id;
 
     let spot = await Spot.findOne({
@@ -91,7 +91,7 @@ router.get(
       const err = new Error("Spot couldn't be found");
       err.message = "Spot couldn't be found";
       err.status = 404;
-      throw err;
+      next(err);
     }
 
     let ret = {};
@@ -139,7 +139,7 @@ router.get(
         },
         {
           model: Spotimage,
-          attributes: ['url']
+          attributes: ['url', 'preview']
         },
       ],
       group: "Spot.id"
@@ -150,7 +150,6 @@ router.get(
     spots.forEach(spot => {
 
       spot = spot.toJSON();
-      console.log(spot.avgRating)
       let each = {};
       each.id = spot.id;
       each.ownerId = spot.ownerId;
@@ -166,11 +165,13 @@ router.get(
       each.createdAt = spot.createdAt;
       each.updatedAt = spot.updatedAt;
       each.avgRating = spot.avgRating;
-      if (spot.Spotimages[0]) {
-        each.previewImage = spot.Spotimages[0].url
-      }
-
-
+      let image = '';
+      spot.Spotimages.forEach(eachImage => {
+        if (eachImage.preview) {
+          image += eachImage.url;
+        }
+      });
+      each.previewImage = image;
       ret.push(each)
     })
     res.json({
@@ -178,6 +179,31 @@ router.get(
     });
   })
 
+//Add an Image to a Spot based on the Spot's id
+router.post(
+  '/:id/images',
+  async (req, res, next) => {
+    const id = +req.params.id;
+    const { url, preview } = req.body;
+
+    const spot = await Spot.findByPk(id);
+
+    if (!spot) {
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      next(err);
+    }
+
+    const newImage = await spot.createSpotimage(
+      {
+        url,
+        preview
+      }
+    );
+
+    res.status(200)
+    res.json(newImage)
+  })
 
 //Create a Spot
 router.post(
@@ -207,5 +233,57 @@ router.post(
     res.status(201)
     res.json(spot)
   })
+
+//Edit a Spot
+router.put(
+  '/:id',
+  validateSpot,
+  async (req, res, next) => {
+    const spotId = +req.params.id;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const spot = await Spot.findByPk(spotId);
+
+    if (!spot) {
+      const err = new Error("Spot couldn't be found");
+      err.message = "Spot couldn't be found";
+      err.status = 404;
+      return next(err);
+    }
+
+    if (spot.ownerId !== req.user.id) {
+      const err = new Error("Need to be owner of the spot to add images");
+      err.message = "Need to be owner of the spot to add images";
+      err.status = 403;
+      return next(err);
+    }
+    spot.address = address;
+    spot.city = city;
+    spot.state = state;
+    spot.country = country;
+    spot.lat = lat;
+    spot.lng = lng;
+    spot.name = name;
+    spot.description = description;
+    spot.price = price;
+    await spot.save()
+
+    //res.status(201)
+    res.json(spot)
+  })
+
+
+// Error formatter
+router.use((err, _req, res, _next) => {
+  res.status(err.status || 500);
+  console.error(err);
+  res.json({
+    //title: err.title || 'Server Error',
+    message: err.message,
+    statusCode: err.status,
+    //errors: [err.errors]
+    //stack: isProduction ? null : err.stack
+  });
+});
 
 module.exports = router;
