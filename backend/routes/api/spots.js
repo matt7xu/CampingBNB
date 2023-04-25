@@ -194,6 +194,13 @@ router.post(
       next(err);
     }
 
+    if (spot.ownerId !== req.user.id) {
+      const err = new Error("Need to be owner of the spot to add images");
+      err.message = "Need to be owner of the spot to add images";
+      err.status = 403;
+      return next(err);
+    }
+
     const newImage = await spot.createSpotimage(
       {
         url,
@@ -252,11 +259,12 @@ router.put(
     }
 
     if (spot.ownerId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to add images");
-      err.message = "Need to be owner of the spot to add images";
+      const err = new Error("Need to be owner of the spot to edit a spot");
+      err.message = "Need to be owner of the spot to edit a spot";
       err.status = 403;
       return next(err);
     }
+
     spot.address = address;
     spot.city = city;
     spot.state = state;
@@ -272,6 +280,36 @@ router.put(
     res.json(spot)
   })
 
+//Delete a Spot
+router.delete(
+  '/:id',
+  async (req, res, next) => {
+    const spotId = +req.params.id;
+
+    const spot = await Spot.findByPk(spotId);
+
+    if(!spot) {
+      const err = new Error("Spot couldn't be found");
+      err.message = "Spot couldn't be found";
+      err.status = 404;
+      return next(err);
+    }
+
+    if (spot.ownerId !== req.user.id) {
+      const err = new Error("Need to be owner of the spot to delete a Spot");
+      err.message = "Need to be owner of the spot to delete a Spot";
+      err.status = 403;
+      return next(err);
+    }
+
+    await spot.destroy();
+
+    res.json({
+      message: 'Successfully deleted',
+      "statusCode": 200
+    })
+  }
+);
 
 // Error formatter
 router.use((err, _req, res, _next) => {
