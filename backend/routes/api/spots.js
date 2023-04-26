@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Spot, Review, Spotimage, sequelize, Reviewimage } = require('../../db/models');
+const { User, Spot, Review, Spotimage, sequelize, Reviewimage, Booking } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -58,10 +58,62 @@ const validateReview = [
     .exists({ checkFalsy: true })
     .isDecimal()
     .notEmpty()
-    .isIn([1,2,3,4,5])
+    .isIn([1, 2, 3, 4, 5])
     .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors
 ];
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get(
+  '/:id/bookings',
+  requireAuth,
+  async (req, res, next) => {
+    const spotId = +req.params.id;
+    const userId = +req.user.id;
+
+    const bookings = await Booking.findAll({
+      where: {
+        spotId
+      },
+        include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName']
+        },
+      ],
+      group: "Booking.id"
+    });
+
+    const spot = await Spot.findByPk(spotId);
+
+    if (!spot) {
+      const err = new Error("Spot couldn't be found");
+      err.message = "Spot couldn't be found";
+      err.status = 404;
+      next(err);
+    }
+
+    if (userId !== bookings[0].userId) {
+      const notOwnerBookings = await Booking.findAll({
+        where: {
+          spotId
+        },
+        attributes: [
+          "spotId",
+          "startDate",
+          "endDate"]
+      });
+
+      res.json({
+        Booking: notOwnerBookings
+      });
+    }
+
+
+    res.json({
+      Booking: bookings
+    });
+  })
 
 //Get all Reviews by a Spot's id
 router.get(
@@ -72,7 +124,7 @@ router.get(
 
     const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
+    if (!spot) {
       const err = new Error("Spot couldn't be found");
       err.message = "Spot couldn't be found";
       err.status = 404;
@@ -91,7 +143,7 @@ router.get(
         {
           model: Reviewimage,
           as: "ReviewImages",
-          attributes: ['id','url']
+          attributes: ['id', 'url']
         }
       ],
       group: "Review.id"
@@ -105,7 +157,7 @@ router.get(
     }
 
     res.json({
-      Reviews : reviews
+      Reviews: reviews
     });
   })
 
@@ -259,18 +311,18 @@ router.post(
       next(err);
     }
 
-   const hasReview = await Review.findOne({
-    where: {
-      userId,
-      spotId
-    }
-   })
+    const hasReview = await Review.findOne({
+      where: {
+        userId,
+        spotId
+      }
+    })
 
-   if(hasReview) {
-    const err = new Error("User already has a review for this spot");
-    err.status = 403;
-    next(err);
-   }
+    if (hasReview) {
+      const err = new Error("User already has a review for this spot");
+      err.status = 403;
+      next(err);
+    }
 
     const newReview = await spot.createReview(
       {
@@ -398,7 +450,7 @@ router.delete(
 
     const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
+    if (!spot) {
       const err = new Error("Spot couldn't be found");
       err.message = "Spot couldn't be found";
       err.status = 404;
