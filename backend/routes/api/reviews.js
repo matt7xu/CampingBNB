@@ -8,6 +8,21 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+
+const validateReview = [
+  check('review')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Review text is required"),
+  check('stars')
+    .exists({ checkFalsy: true })
+    .isDecimal()
+    .notEmpty()
+    .isIn([1, 2, 3, 4, 5])
+    .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors
+];
+
 //Add an Image to a Review based on the Review's id
 router.post(
   '/:id/images',
@@ -57,6 +72,37 @@ router.post(
     })
   })
 
+//Edit a Review
+router.put(
+  '/:id',
+  validateReview,
+  async (req, res, next) => {
+    const reviewId = +req.params.id;
+    const { review, stars } = req.body;
+
+    const updateReview = await Review.findByPk(reviewId);
+
+    if (!review) {
+      const err = new Error("Review couldn't be found");
+      err.message = "Review couldn't be found";
+      err.status = 404;
+      return next(err);
+    }
+
+    if (updateReview.userId !== req.user.id) {
+      const err = new Error("Need to be owner of the spot to edit a spot");
+      err.message = "Need to be owner of the spot to edit a spot";
+      err.status = 403;
+      return next(err);
+    }
+
+    updateReview.review = review;
+    updateReview.stars = stars;
+    await updateReview.save()
+
+    res.status(200)
+    res.json(updateReview)
+  })
 
 // Error formatter
 router.use((err, _req, res, _next) => {
