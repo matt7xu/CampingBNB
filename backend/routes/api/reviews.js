@@ -82,7 +82,7 @@ router.put(
 
     const updateReview = await Review.findByPk(reviewId);
 
-    if (!review) {
+    if (!updateReview) {
       const err = new Error("Review couldn't be found");
       err.message = "Review couldn't be found";
       err.status = 404;
@@ -103,6 +103,37 @@ router.put(
     res.status(200)
     res.json(updateReview)
   })
+
+//Delete a Review
+router.delete(
+  '/:id',
+  async (req, res, next) => {
+    const reviewId = +req.params.id;
+
+    const review = await Review.findByPk(reviewId);
+
+    if(!review) {
+      const err = new Error("Spot couldn't be found");
+      err.message = "Spot couldn't be found";
+      err.status = 404;
+      return next(err);
+    }
+
+    if (review.userId !== req.user.id) {
+      const err = new Error("Need to be owner of the spot to delete a Spot");
+      err.message = "Need to be owner of the spot to delete a Spot";
+      err.status = 403;
+      return next(err);
+    }
+
+    await review.destroy();
+
+    res.json({
+      message: 'Successfully deleted',
+      "statusCode": 200
+    })
+  }
+);
 
 // Error formatter
 router.use((err, _req, res, _next) => {
