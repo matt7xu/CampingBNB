@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 //const { environment } = require('../../config');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Spot, Review, Spotimage, sequelize, Reviewimage } = require('../../db/models');
+const { User, Spot, Review, Spotimage, sequelize, Reviewimage, Booking } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -51,9 +51,41 @@ const validateLogin = [
   handleValidationErrors
 ];
 
+//Get all of the Current User's Bookings
+router.get(
+  '/owned/bookings',
+  requireAuth,
+  async (req, res, next) => {
+    const userId = +req.user.id;
+
+    const bookings = await Booking.findAll({
+      where: {
+        userId
+      },
+      include: [
+        {
+          model: Spot,
+          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"]
+        },
+        {
+          model: Spotimage,
+          as: "previewImage",
+          where: { preview: true },
+          attributes: ['url']
+        },
+      ],
+      group: "Booking.id"
+    });
+
+    res.json({
+      Bookings : bookings
+    });
+  })
+
 //Get all Reviews of the Current User
 router.get(
   '/owned/reviews',
+  requireAuth,
   async (req, res, next) => {
     const userId = +req.user.id;
 
@@ -87,6 +119,7 @@ router.get(
 //Get all Spots owned by the Current User
 router.get(
   '/owned/spots',
+  requireAuth,
   async (req, res) => {
     const ownerId = +req.user.id;
     const spots = await Spot.findAll({

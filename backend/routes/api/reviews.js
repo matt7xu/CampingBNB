@@ -26,6 +26,7 @@ const validateReview = [
 //Add an Image to a Review based on the Review's id
 router.post(
   '/:id/images',
+  requireAuth,
   async (req, res, next) => {
     const reviewId = +req.params.id;
     const { url } = req.body;
@@ -76,6 +77,7 @@ router.post(
 router.put(
   '/:id',
   validateReview,
+  requireAuth,
   async (req, res, next) => {
     const reviewId = +req.params.id;
     const { review, stars } = req.body;
@@ -107,6 +109,7 @@ router.put(
 //Delete a Review
 router.delete(
   '/:id',
+  requireAuth,
   async (req, res, next) => {
     const reviewId = +req.params.id;
 

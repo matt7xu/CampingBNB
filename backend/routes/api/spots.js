@@ -66,6 +66,7 @@ const validateReview = [
 //Get all Reviews by a Spot's id
 router.get(
   '/:id/reviews',
+  requireAuth,
   async (req, res, next) => {
     const spotId = +req.params.id;
 
@@ -113,6 +114,7 @@ router.get(
 //Get details of a Spot from an id
 router.get(
   '/:id',
+  requireAuth,
   async (req, res, next) => {
     const id = +req.params.id;
 
@@ -243,6 +245,7 @@ router.get(
 router.post(
   '/:id/reviews',
   validateReview,
+  requireAuth,
   async (req, res, next) => {
     const spotId = +req.params.id;
     const { review, stars } = req.body;
@@ -285,6 +288,7 @@ router.post(
 //Add an Image to a Spot based on the Spot's id
 router.post(
   '/:id/images',
+  requireAuth,
   async (req, res, next) => {
     const id = +req.params.id;
     const { url, preview } = req.body;
@@ -319,6 +323,7 @@ router.post(
 router.post(
   '/',
   validateSpot,
+  requireAuth,
   async (req, res) => {
     const ownerId = +req.user.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -348,6 +353,7 @@ router.post(
 router.put(
   '/:id',
   validateSpot,
+  requireAuth,
   async (req, res, next) => {
     const spotId = +req.params.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -386,6 +392,7 @@ router.put(
 //Delete a Spot
 router.delete(
   '/:id',
+  requireAuth,
   async (req, res, next) => {
     const spotId = +req.params.id;
 
