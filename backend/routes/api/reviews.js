@@ -92,8 +92,8 @@ router.put(
     }
 
     if (updateReview.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to edit a spot");
-      err.message = "Need to be owner of the spot to edit a spot";
+      const err = new Error("Need to be owner of the review to edit a review");
+      err.message = "Need to be owner of the review to edit a review";
       err.status = 403;
       return next(err);
     }
@@ -123,8 +123,8 @@ router.delete(
     }
 
     if (review.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to delete a Spot");
-      err.message = "Need to be owner of the spot to delete a Spot";
+      const err = new Error("Need to be owner of the review to delete a review");
+      err.message = "Need to be owner of the review to delete a review";
       err.status = 403;
       return next(err);
     }
