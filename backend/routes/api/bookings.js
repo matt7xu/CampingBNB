@@ -106,7 +106,7 @@ router.put(
     }
 
     const currentTime = new Date();
-    if(updateBooking.dataValues.endDate <= currentTime) {
+    if (updateBooking.dataValues.endDate <= currentTime) {
       const err = new Error("Past bookings can't be modified");
       err.message = "Past bookings can't be modified";
       err.status = 403;
@@ -162,37 +162,45 @@ router.put(
     res.json(updateBooking)
   })
 
-// //Delete a Review
-// router.delete(
-//   '/:id',
-//   requireAuth,
-//   async (req, res, next) => {
-//     const reviewId = +req.params.id;
+//Delete a Booking
+router.delete(
+  '/:id',
+  requireAuth,
+  async (req, res, next) => {
+    const bookingId = +req.params.id;
 
-//     const review = await Review.findByPk(reviewId);
+    const deleteBooking = await Booking.findByPk(bookingId);
 
-//     if(!review) {
-//       const err = new Error("Spot couldn't be found");
-//       err.message = "Spot couldn't be found";
-//       err.status = 404;
-//       return next(err);
-//     }
+    if (!deleteBooking) {
+      const err = new Error("Booking couldn't be found");
+      err.message = "Booking couldn't be found";
+      err.status = 404;
+      return next(err);
+    }
 
-//     if (review.userId !== req.user.id) {
-//       const err = new Error("Need to be owner of the spot to delete a Spot");
-//       err.message = "Need to be owner of the spot to delete a Spot";
-//       err.status = 403;
-//       return next(err);
-//     }
+    if (deleteBooking.userId !== req.user.id) {
+      const err = new Error("Need to be owner of the Booking to delete a Booking");
+      err.message = "Need to be owner of the Booking to delete a Booking";
+      err.status = 403;
+      return next(err);
+    }
 
-//     await review.destroy();
+    const currentTime = new Date();
+    if (currentTime > deleteBooking.dataValues.startDate && currentTime < deleteBooking.dataValues.endDate) {
+      const err = new Error("Bookings that have been started can't be deleted");
+      err.message = "Bookings that have been started can't be deleted";
+      err.status = 403;
+      return next(err);
+    }
 
-//     res.json({
-//       message: 'Successfully deleted',
-//       "statusCode": 200
-//     })
-//   }
-// );
+      await deleteBooking.destroy();
+
+    res.json({
+      message: 'Successfully deleted',
+      "statusCode": 200
+    })
+  }
+);
 
 // Error formatter
 router.use((err, _req, res, _next) => {
