@@ -303,7 +303,6 @@ router.post(
     const { startDate, endDate } = req.body;
     const userId = +req.user.id;
 
-    //console.log('55555555', startDate)
     let sDate = new Date(startDate);
     let eDate = new Date(endDate);
 
