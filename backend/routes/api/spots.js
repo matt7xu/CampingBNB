@@ -510,7 +510,7 @@ router.put(
     spot.price = price;
     await spot.save()
 
-    //res.status(201)
+    res.status(200)
     res.json(spot)
   })
 
