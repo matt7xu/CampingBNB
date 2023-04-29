@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 //const cors = require('cors');
 //const { environment } = require('../../config');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { User, Spot, Review, Spotimage, sequelize, Reviewimage, Booking } = require('../../db/models');
 
 const { check } = require('express-validator');
@@ -65,20 +65,36 @@ router.get(
       include: [
         {
           model: Spot,
-          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"]
-        },
-        {
-          model: Spotimage,
-          as: "previewImage",
-          where: { preview: true },
-          attributes: ['url']
-        },
+          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"],
+          include : [
+            {
+              model: Spotimage,
+              as: "previewImage",
+              where: { preview: true },
+              attributes: ['url'],
+              required: false
+            }
+          ]
+        }
       ],
-      group: "Booking.id"
+      group: ["Booking.id", "Spot.previewImage.id"]
     });
 
+    let ret = [];
+    bookings.forEach(each => {
+      let book = each.toJSON();
+      let image = '';
+      if(book.Spot.previewImage.length > 0) {
+        book.Spot.previewImage.forEach(eachImage => {
+          image+=eachImage.url;
+        })
+      }
+      book.Spot.previewImage = image;
+      ret.push(book);
+    })
+
     res.json({
-      Bookings : bookings
+      Bookings : ret
     });
   })
 
@@ -100,7 +116,15 @@ router.get(
         },
         {
           model: Spot,
-          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"]
+          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"],
+          include: {
+            model: Spotimage,
+            as: "previewImage",
+            attributes: ['url'],
+            where: { preview: true },
+            required: false
+          },
+          //group: "previewImage.id"
         },
         {
           model: Reviewimage,
@@ -108,11 +132,24 @@ router.get(
           attributes: ['id','url']
         },
       ],
-      group: "Review.id"
+      group: ["Review.id", "Spot.previewImage.id" ]
     });
 
+    let ret = [];
+    reviews.forEach(each => {
+      let review = each.toJSON();
+      let image = '';
+      if(review.Spot.previewImage.length > 0) {
+        review.Spot.previewImage.forEach(eachImage => {
+          image+=eachImage.url;
+        })
+      }
+      review.Spot.previewImage = image;
+      ret.push(review);
+    })
+
     res.json({
-      Reviews : reviews
+      Reviews : ret
     });
   })
 
@@ -140,7 +177,10 @@ router.get(
         },
         {
           model: Spotimage,
-          attributes: ['url']
+          attributes: ['url'],
+          as: "previewImage",
+          where: { preview: true },
+          required: false
         },
       ],
       group: "Spot.id"
@@ -166,13 +206,13 @@ router.get(
       each.updatedAt = spot.updatedAt;
       each.avgRating = spot.avgRating;
       let image = '';
-      spot.Spotimages.forEach(eachImage => {
-        if (eachImage.preview) {
+      spot.previewImage.forEach(eachImage => {
+        if (eachImage) {
           image += eachImage.url;
         }
       });
       each.previewImage = image;
-      ret.push(each)
+      ret.push(each);
     })
     res.json({
       Spots: ret
@@ -290,13 +330,22 @@ router.delete(
 router.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
-  res.json({
-    //title: err.title || 'Server Error',
+
+  let errMessage = {
     message: err.message,
-    statusCode: err.status,
-    errors: [err.errors]
+    statusCode: err.status
+  }
+  if (err.errors) {
+    errMessage.errors = [err.errors]
+  }
+  res.json(
+    //title: err.title || 'Server Error',
+    // message: err.message,
+    // statusCode: err.status,
+    // errors: [err.errors]
     //stack: isProduction ? null : err.stack
-  });
+    errMessage
+  );
 });
 
 module.exports = router;

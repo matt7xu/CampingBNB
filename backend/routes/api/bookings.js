@@ -34,14 +34,14 @@ router.put(
     }
 
     if (updateBooking.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the booking to edit a booking");
-      err.message = "Need to be owner of the booking to edit a booking";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
 
     const currentTime = new Date();
-    if (updateBooking.dataValues.endDate <= currentTime) {
+    if (updateBooking.dataValues.startDate <= currentTime || updateBooking.dataValues.endDate <= currentTime) {
       const err = new Error("Past bookings can't be modified");
       err.message = "Past bookings can't be modified";
       err.status = 403;
@@ -87,11 +87,13 @@ router.put(
       err.status = 403;
       err.errors = "End date conflicts with an existing booking";
       next(err);
-    }
+    };
 
-    updateBooking.startDate = startDate;
-    updateBooking.endDate = endDate;
-    await updateBooking.save()
+    if (currentBookingsStart.length === 0 && currentBookingsEnd.length === 0) {
+      updateBooking.startDate = startDate;
+      updateBooking.endDate = endDate;
+      await updateBooking.save()
+    };
 
     res.status(200)
     res.json(updateBooking)
@@ -114,21 +116,21 @@ router.delete(
     }
 
     if (deleteBooking.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the Booking to delete a Booking");
-      err.message = "Need to be owner of the Booking to delete a Booking";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
 
     const currentTime = new Date();
-    if (currentTime > deleteBooking.dataValues.startDate && currentTime < deleteBooking.dataValues.endDate) {
+    if (currentTime >= deleteBooking.dataValues.startDate && currentTime <= deleteBooking.dataValues.endDate) {
       const err = new Error("Bookings that have been started can't be deleted");
       err.message = "Bookings that have been started can't be deleted";
       err.status = 403;
       return next(err);
     }
 
-      await deleteBooking.destroy();
+    await deleteBooking.destroy();
 
     res.json({
       message: 'Successfully deleted',
@@ -141,13 +143,21 @@ router.delete(
 router.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
-  res.json({
-    //title: err.title || 'Server Error',
-    message: err.message,
-    statusCode: err.status,
-    //errors: [err.errors]
-    //stack: isProduction ? null : err.stack
-  });
-});
 
+  let errMessage = {
+    message: err.message,
+    statusCode: err.status
+  }
+  if (err.errors) {
+    errMessage.errors = [err.errors]
+  }
+  res.json(
+    //title: err.title || 'Server Error',
+    // message: err.message,
+    // statusCode: err.status,
+    // errors: [err.errors]
+    //stack: isProduction ? null : err.stack
+    errMessage
+  );
+});
 module.exports = router;

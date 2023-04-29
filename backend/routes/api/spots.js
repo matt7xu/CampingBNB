@@ -64,6 +64,10 @@ const validateReview = [
   handleValidationErrors
 ];
 
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 //Get all Bookings for a Spot based on the Spot's id
 router.get(
   '/:id/bookings',
@@ -192,6 +196,7 @@ router.get(
         },
         {
           model: Spotimage,
+          as: "previewImage",
           attributes: ['id', 'url', 'preview']
         },
         {
@@ -199,7 +204,7 @@ router.get(
           attributes: ['id', 'firstName', 'lastName']
         },
       ],
-      group: "Spotimages.id"
+      group: "previewImage.id"
     });
 
     if (!spot) {
@@ -228,7 +233,7 @@ router.get(
     ret.updatedAt = spot.updatedAt;
     ret.numReviews = spot.numReviews;
     ret.avgStarRating = spot.avgStarRating;
-    ret.SpotImages = spot.Spotimages;
+    ret.SpotImages = spot.previewImage;
     ret.Owner = spot.User;
 
     res.json(ret);
@@ -239,7 +244,115 @@ router.get(
 router.get(
   '/',
   async (req, res) => {
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+    if (!page) page = 0;
+    if (!size) size = 20;
+
+    let pag = {};
+    let where = {};
+
+    if (!isNumeric(page) || parseInt(page) < 0) {
+      const err = new Error("Validation Error");
+      err.message = "Validation Error";
+      err.status = 400;
+      err.errors = "Page must be greater than or equal to 0";
+      next(err);
+    }
+
+    if (!isNumeric(size) || parseInt(size) < 0) {
+      const err = new Error("Validation Error");
+      err.message = "Validation Error";
+      err.status = 400;
+      err.errors = "Size must be greater than or equal to 0";
+      next(err);
+    }
+
+    if (minLat) {
+      if (!isNumeric(minLat)) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Minimum latitude is invalid";
+        next(err);
+      }
+      minLat = parseFloat(minLat);
+      where.lat = { [Op.gte]: minLat };
+    };
+
+    if (maxLat) {
+      if (!isNumeric(maxLat)) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Maximum latitude is invalid";
+        next(err);
+      }
+      maxLat = parseFloat(maxLat);
+      where.lat = { [Op.lte]: maxLat };
+    };
+
+    if (minLng) {
+      if (!isNumeric(minLng)) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Maximum longitude is invalid";
+        next(err);
+      }
+      minLng = parseFloat(minLng);
+      where.lng = { [Op.gte]: minLng };
+    };
+
+    if (maxLng) {
+      if (!isNumeric(maxLng)) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Maximum longitude is invalid";
+        next(err);
+      }
+      maxLng = parseFloat(maxLng);
+      where.lng = { [Op.lte]: maxLng };
+    };
+
+    if (minPrice) {
+      if (!isNumeric(minPrice) || parseFloat(minPrice) < 0) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Minimum price must be greater than or equal to 0";
+        next(err);
+      }
+      minPrice = parseFloat(minPrice);
+      where.price = { [Op.gte]: minPrice };
+    };
+
+    if (maxPrice) {
+      if (!isNumeric(maxPrice) || parseFloat(maxPrice) < 0) {
+        const err = new Error("Validation Error");
+        err.message = "Validation Error";
+        err.status = 400;
+        err.errors = "Maximum price must be greater than or equal to 0";
+        next(err);
+      }
+      maxPrice = parseFloat(maxPrice);
+      where.price = { [Op.lte]: maxPrice };
+    };
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    let p = page;
+    let s = size;
+
+    if (p > 10) p = 10;
+    if (s > 20) s = 20;
+    pag.limit = s;
+    pag.offset = s * p;
+
+
     const spots = await Spot.findAll({
+      where,
       attributes: {
         include: [
           [
@@ -254,10 +367,15 @@ router.get(
         },
         {
           model: Spotimage,
-          attributes: ['url', 'preview']
+          attributes: ['url'],
+          as: "previewImage",
+          where: { preview: true },
+          required: false
         },
       ],
-      group: "Spot.id"
+      group: ["Spot.id", "previewImage.id"],
+      subQuery: false,
+      ...pag
     });
 
     let ret = [];
@@ -281,16 +399,18 @@ router.get(
       each.updatedAt = spot.updatedAt;
       each.avgRating = spot.avgRating;
       let image = '';
-      spot.Spotimages.forEach(eachImage => {
-        if (eachImage.preview) {
+      spot.previewImage.forEach(eachImage => {
+        if (eachImage) {
           image += eachImage.url;
         }
       });
       each.previewImage = image;
-      ret.push(each)
+      ret.push(each);
     })
     res.json({
-      Spots: ret
+      Spots: ret,
+      page: page,
+      size: size
     });
   })
 
@@ -299,6 +419,7 @@ router.post(
   '/:id/bookings',
   requireAuth,
   async (req, res, next) => {
+
     const spotId = +req.params.id;
     const { startDate, endDate } = req.body;
     const userId = +req.user.id;
@@ -353,17 +474,21 @@ router.post(
       next(err);
     }
 
-    const newBooking = await Booking.create(
-      {
-        userId,
-        spotId,
-        startDate,
-        endDate
-      }
-    );
-
+    if (currentBookingsStart.length === 0 && currentBookingsEnd.length === 0) {
+      var newBooking = await Booking.create(
+        {
+          userId,
+          spotId,
+          startDate,
+          endDate
+        }
+      );
+    };
+    
     res.status(201)
     res.json(newBooking)
+
+
   })
 
 //Create a Review for a Spot based on the Spot's id
@@ -427,21 +552,33 @@ router.post(
     }
 
     if (spot.ownerId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to add images");
-      err.message = "Need to be owner of the spot to add images";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
 
-    const newImage = await spot.createSpotimage(
+    // const newImage = await spot.createSpotimage(
+    //   {
+    //     url,
+    //     preview
+    //   }
+    // );
+
+    const newImage = await Spotimage.create(
       {
+        spotId: id,
         url,
         preview
       }
     );
 
     res.status(200)
-    res.json(newImage)
+    res.json({
+      id: newImage.id,
+      url: newImage.url,
+      preview: newImage.preview
+    })
   })
 
 //Create a Spot
@@ -493,8 +630,8 @@ router.put(
     }
 
     if (spot.ownerId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to edit a spot");
-      err.message = "Need to be owner of the spot to edit a spot";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
@@ -533,8 +670,8 @@ router.delete(
     const spot = await Spot.findByPk(deleteSpotImage.spotId);
 
     if (spot.ownerId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to delete a Spot");
-      err.message = "Need to be owner of the spot to delete a Spot";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
@@ -565,8 +702,8 @@ router.delete(
     }
 
     if (spot.ownerId !== req.user.id) {
-      const err = new Error("Need to be owner of the spot to delete a Spot");
-      err.message = "Need to be owner of the spot to delete a Spot";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }

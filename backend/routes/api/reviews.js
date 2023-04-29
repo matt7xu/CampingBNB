@@ -41,7 +41,7 @@ router.post(
     }
 
     if (userId !== review.userId) {
-      const err = new Error("Need to be owner of the review to add images");
+      const err = new Error("Forbidden");
       err.status = 403;
       return next(err);
     }
@@ -92,8 +92,8 @@ router.put(
     }
 
     if (updateReview.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the review to edit a review");
-      err.message = "Need to be owner of the review to edit a review";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
@@ -125,8 +125,8 @@ router.delete(
     const review = await Review.findByPk(deleteReviewImage.reviewId);
 
     if (review.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the review to delete a review");
-      err.message = "Need to be owner of the review to delete a review";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
@@ -157,8 +157,8 @@ router.delete(
     }
 
     if (review.userId !== req.user.id) {
-      const err = new Error("Need to be owner of the review to delete a review");
-      err.message = "Need to be owner of the review to delete a review";
+      const err = new Error("Forbidden");
+      err.message = "Forbidden";
       err.status = 403;
       return next(err);
     }
@@ -176,13 +176,21 @@ router.delete(
 router.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
-  res.json({
-    //title: err.title || 'Server Error',
-    message: err.message,
-    statusCode: err.status,
-    //errors: [err.errors]
-    //stack: isProduction ? null : err.stack
-  });
-});
 
+  let errMessage = {
+    message: err.message,
+    statusCode: err.status
+  }
+  if (err.errors) {
+    errMessage.errors = [err.errors]
+  }
+  res.json(
+    //title: err.title || 'Server Error',
+    // message: err.message,
+    // statusCode: err.status,
+    // errors: [err.errors]
+    //stack: isProduction ? null : err.stack
+    errMessage
+  );
+});
 module.exports = router;
