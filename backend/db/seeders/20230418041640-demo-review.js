@@ -20,21 +20,18 @@ module.exports = {
     options.tableName = 'Reviews';
     return queryInterface.bulkInsert(options, [
     {
-      id: 1,
       userId: 1,
       spotId: 1,
       review: "This was an awesome spot!",
       stars: 5,
     },
     {
-      id: 2,
       userId: 1,
       spotId: 2,
       review: "This was an so so spot!",
       stars: 4,
     },
     {
-      id: 3,
       userId: 3,
       spotId: 3,
       review: "This was not an awesome spot!",
@@ -52,8 +49,6 @@ module.exports = {
      */
     options.tableName = 'Reviews';
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1,2,3] }
-    }, {});
+    return queryInterface.bulkDelete(options, null, {});
   }
 };
