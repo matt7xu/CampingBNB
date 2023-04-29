@@ -86,7 +86,7 @@ router.get(
           attributes: ['id', 'firstName', 'lastName']
         },
       ],
-      group: "Booking.id"
+      group: ["Booking.id", "User.id"]
     });
 
     const spot = await Spot.findByPk(spotId);
@@ -151,7 +151,7 @@ router.get(
           attributes: ['id', 'url']
         }
       ],
-      group: "Review.id"
+      group: ["Review.id", "User.id", "ReviewImages.id"]
     });
 
     if (!spot) {
@@ -204,7 +204,7 @@ router.get(
           attributes: ['id', 'firstName', 'lastName']
         },
       ],
-      group: "previewImage.id"
+      group: ["Spot.id", "previewImage.id", "Review.id", "User.id"]
     });
 
     if (!spot) {
@@ -397,7 +397,7 @@ router.get(
       each.price = spot.price;
       each.createdAt = spot.createdAt;
       each.updatedAt = spot.updatedAt;
-      each.avgRating = spot.avgRating;
+      each.avgRating = Number(spot.avgRating).toFixed(1);
       let image = '';
       spot.previewImage.forEach(eachImage => {
         if (eachImage) {
@@ -484,7 +484,7 @@ router.post(
         }
       );
     };
-    
+
     res.status(201)
     res.json(newBooking)
 

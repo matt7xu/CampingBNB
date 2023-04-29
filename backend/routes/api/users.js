@@ -65,8 +65,8 @@ router.get(
       include: [
         {
           model: Spot,
-          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"],
-          include : [
+          attributes: ['id', 'ownerId', "address", "city", "state", "country", "lat", "lng", "name", "price"],
+          include: [
             {
               model: Spotimage,
               as: "previewImage",
@@ -77,16 +77,16 @@ router.get(
           ]
         }
       ],
-      group: ["Booking.id", "Spot.previewImage.id"]
+      group: ["Booking.id", "Spot.previewImage.id", "Spot.id"]
     });
 
     let ret = [];
     bookings.forEach(each => {
       let book = each.toJSON();
       let image = '';
-      if(book.Spot.previewImage.length > 0) {
+      if (book.Spot.previewImage.length > 0) {
         book.Spot.previewImage.forEach(eachImage => {
-          image+=eachImage.url;
+          image += eachImage.url;
         })
       }
       book.Spot.previewImage = image;
@@ -94,7 +94,7 @@ router.get(
     })
 
     res.json({
-      Bookings : ret
+      Bookings: ret
     });
   })
 
@@ -112,11 +112,11 @@ router.get(
       include: [
         {
           model: User,
-          attributes: ['id','firstName','lastName']
+          attributes: ['id', 'firstName', 'lastName']
         },
         {
           model: Spot,
-          attributes: ['id','ownerId',"address","city","state","country","lat","lng","name","price"],
+          attributes: ['id', 'ownerId', "address", "city", "state", "country", "lat", "lng", "name", "price"],
           include: {
             model: Spotimage,
             as: "previewImage",
@@ -124,24 +124,23 @@ router.get(
             where: { preview: true },
             required: false
           },
-          //group: "previewImage.id"
         },
         {
           model: Reviewimage,
           as: "ReviewImages",
-          attributes: ['id','url']
+          attributes: ['id', 'url']
         },
       ],
-      group: ["Review.id", "Spot.previewImage.id" ]
+      group: ["Review.id", "Spot.previewImage.id", "User.id"]
     });
 
     let ret = [];
     reviews.forEach(each => {
       let review = each.toJSON();
       let image = '';
-      if(review.Spot.previewImage.length > 0) {
+      if (review.Spot.previewImage.length > 0) {
         review.Spot.previewImage.forEach(eachImage => {
-          image+=eachImage.url;
+          image += eachImage.url;
         })
       }
       review.Spot.previewImage = image;
@@ -149,7 +148,7 @@ router.get(
     })
 
     res.json({
-      Reviews : ret
+      Reviews: ret
     });
   })
 
@@ -183,7 +182,7 @@ router.get(
           required: false
         },
       ],
-      group: "Spot.id"
+      group: ["Spot.id", "previewImage.id"]
     });
 
     let ret = [];
@@ -204,7 +203,7 @@ router.get(
       each.price = spot.price;
       each.createdAt = spot.createdAt;
       each.updatedAt = spot.updatedAt;
-      each.avgRating = spot.avgRating;
+      each.avgRating = Number(spot.avgRating).toFixed(1);
       let image = '';
       spot.previewImage.forEach(eachImage => {
         if (eachImage) {
@@ -252,7 +251,7 @@ router.post(
     } catch (e) {
       const err = new Error('User already exists');
       err.status = 403;
-      if(e.errors[0].path === 'email'){
+      if (e.errors[0].path === 'email') {
         err.errors = "User with that email already exists";
       } else {
         err.errors = "User with that username already exists";
