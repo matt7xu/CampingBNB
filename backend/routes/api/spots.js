@@ -204,7 +204,7 @@ router.get(
           attributes: ['id', 'firstName', 'lastName']
         },
       ],
-      group: ["Spot.id", "previewImage.id", "Review.id", "User.id"]
+      group: ["Spot.id", "previewImage.id", "User.id"]
     });
 
     if (!spot) {
