@@ -131,7 +131,7 @@ router.get(
           attributes: ['id', 'url']
         },
       ],
-      group: ["Review.id", "Spot.previewImage.id", "User.id", "Spot.id"]
+      group: ["Review.id", "Spot.previewImage.id", "User.id", "Spot.id", "ReviewImages.id"]
     });
 
     let ret = [];
