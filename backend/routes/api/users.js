@@ -247,7 +247,7 @@ router.post(
     const { firstName, lastName, email, password, username } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
     try {
-      const user = await User.create({ firstName, lastName, email, username, hashedPassword });
+      var user = await User.create({ firstName, lastName, email, username, hashedPassword });
     } catch (e) {
       const err = new Error('User already exists');
       err.status = 403;
