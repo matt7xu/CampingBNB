@@ -17,24 +17,26 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
+      <li className='afterLogin'>
         <ProfileButton user={sessionUser} />
+        <> </>
         <button onClick={logout}>Log Out</button>
       </li>
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className='beforeLogin'>
         <NavLink to="/login">Log In</NavLink>
+        <>  /  </>
         <NavLink to="/signup">Sign Up</NavLink>
       </li>
     );
   }
 
   return (
-    <ul>
+    <ul className="homeNav">
       <li>
-        <NavLink exact to="/">Home</NavLink>
+        <NavLink exact to="/"><i className="fas fa-home"></i></NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>

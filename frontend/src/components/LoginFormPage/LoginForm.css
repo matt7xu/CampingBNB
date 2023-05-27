@@ -12,8 +12,8 @@ input {
 }
 
 button {
-  height: 40px;
-  width: 200px;
+  height: 30px;
+  width: 100px;
   background: rgb(60, 56, 56);
   color: rgb(255, 255, 255);
   font-size: 1.1em;

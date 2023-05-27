@@ -1,0 +1,23 @@
+.homeNav {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.beforeLogin {
+  padding: 0
+}
+
+.afterLogin {
+  gap: 5%;
+}
+
+ .profile-dropdown > li {
+  margin: 0;
+  display: block;
+  background-color: white;
+}
+
+.profile-dropdown > li:hover {
+  background-color: lightgray;
+}
