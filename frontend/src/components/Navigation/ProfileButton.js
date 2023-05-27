@@ -4,7 +4,7 @@ import * as sessionActions from '../../store/session';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const logout = (e) => {
     e.preventDefault();
@@ -18,17 +18,16 @@ function ProfileButton({ user }) {
   return (
     <div className="dropdown">
       <button onClick={handleOpen}>
-        {/* <i className="fas fa-user-circle" /> */}
         <i className="fas fa-id-card" />
       </button>
       {open ? (<ul className="profile-dropdown">
         <li>Username: {user.username}</li>
         <li>Name: {user.firstName} {user.lastName}</li>
         <li>Email: {user.email}</li>
-        {/* <li>
+        <li>
           <button onClick={logout}>Log Out
           </button>
-        </li> */}
+        </li>
       </ul>) : null}
     </div>
   );
