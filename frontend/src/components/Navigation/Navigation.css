@@ -21,3 +21,13 @@
 .profile-dropdown > li:hover {
   background-color: lightgray;
 }
+
+.logo {
+  width: 100px;
+  position: relative;
+  margin: auto;
+}
+
+.hidden {
+  display: none
+}

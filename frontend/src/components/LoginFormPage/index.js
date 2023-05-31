@@ -26,17 +26,11 @@ const LoginFormPage = () => {
 
   const demoLogin = (e) => {
     e.preventDefault();
-    setErrors({});
     const demo = {
       credential: "Demo-lition",
       password: "password"
     }
-    return dispatch(sessionActions.login(demo)).catch(
-      async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      }
-    );
+    return dispatch(sessionActions.login(demo))
   }
 
   return (
@@ -64,7 +58,7 @@ const LoginFormPage = () => {
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
       </form>
-      <button onClick={demoLogin} type="submit">Demo</button>
+      <button className="demoLoginButton" onClick={demoLogin} type="submit">Log in as Demo User</button>
     </>
   );
 }

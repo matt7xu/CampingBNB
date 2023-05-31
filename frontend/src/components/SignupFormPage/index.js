@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
+import "./SignupForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -14,10 +15,23 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+      const error = {};
+      if (username.length < 4) {
+        error.username = "Username field is less than 4 characters"
+      }
+      if (password.length < 6) {
+        error.password = "Password field is less than 6 characters"
+      }
+      if (!email.includes('@')) errors.email = 'Please provide a valid Email';
+      setErrors(error);
+  }, [username, password, email])
+
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -31,7 +45,11 @@ function SignupFormPage() {
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors(data.errors);
+          console.log(Object.values(data.errors[0]))
+          const newError = {
+            new: Object.values(data.errors[0])[0]
+          }
+          setErrors(newError);
         }
       });
     }
@@ -39,7 +57,6 @@ function SignupFormPage() {
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
-
   return (
     <>
       <h1>Sign Up</h1>
@@ -104,7 +121,8 @@ function SignupFormPage() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        {errors.new && <p>{errors.new}</p>}
+        <button type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
       </form>
     </>
   );

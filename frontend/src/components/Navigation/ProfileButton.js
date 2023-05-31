@@ -1,35 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const ulRef = useRef();
+
+  const openMenu = () => {
+    if (showMenu) return;
+    setShowMenu(true);
+  };
+
+  useEffect(() => {
+    if (!showMenu) return;
+    const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('click', closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
   };
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
+  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <div className="dropdown">
-      <button onClick={handleOpen}>
-        <i className="fas fa-id-card" />
+    <>
+      <button onClick={openMenu}>
+        <i className="fas fa-user-circle" />
       </button>
-      {open ? (<ul className="profile-dropdown">
-        <li>Username: {user.username}</li>
-        <li>Name: {user.firstName} {user.lastName}</li>
-        <li>Email: {user.email}</li>
+      <ul className={ulClassName} ref={ulRef}>
+        {/* <li>{user.username}</li> */}
+        <li>Hi, {user.firstName}</li>
+        <li>{user.email}</li>
         <li>
-          <button onClick={logout}>Log Out
-          </button>
+          <button onClick={logout}>Log Out</button>
         </li>
-      </ul>) : null}
-    </div>
+      </ul>
+    </>
   );
 }
 
