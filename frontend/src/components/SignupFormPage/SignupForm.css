@@ -29,3 +29,11 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
 }
+
+.error {
+  color: red;
+  font-size: 12px;
+  height: 15px;
+  width: 220px;
+  margin: 3px;
+}

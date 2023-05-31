@@ -70,7 +70,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="error">{errors.email}</p>}
         <label>
           Username
           <input
@@ -80,7 +80,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className="error">{errors.username}</p>}
         <label>
           First Name
           <input
@@ -90,7 +90,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className="error">{errors.firstName}</p>}
         <label>
           Last Name
           <input
@@ -100,7 +100,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="error">{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -110,7 +110,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="error">{errors.password}</p>}
         <label>
           Confirm Password
           <input
@@ -120,8 +120,8 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        {errors.new && <p>{errors.new}</p>}
+        {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+        {errors.new && <p className="error">{errors.new}</p>}
         <button type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
       </form>
     </>
