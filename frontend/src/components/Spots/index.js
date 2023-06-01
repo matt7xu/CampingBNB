@@ -17,9 +17,9 @@ const Spots = () => {
     <>
       <div className="allSpots">
         {allSpots.map(spot => (
-            <div>
+            <div className="spotItem">
               <Link to={`/spots/${spot.id}`}>
-                <img key={spot.id} src={`${spot?.previewImage}`} alt={spot.description} title={spot.name} />
+                <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
               </Link>
               <div>
                 <div>{spot.city}, {spot.state}</div>

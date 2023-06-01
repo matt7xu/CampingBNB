@@ -1,0 +1,14 @@
+.spotImage {
+  height: 120px;
+  width: 150px;
+}
+
+.allSpots {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+.spotItem {
+  padding: 10px;
+}

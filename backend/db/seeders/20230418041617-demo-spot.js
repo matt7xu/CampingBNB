@@ -60,6 +60,62 @@ module.exports = {
         price: 3123,
         createdAt: "2021-11-19 20:39:36",
         updatedAt: "2021-11-19 20:39:36"
+      },
+      {
+        ownerId: 1,
+        address: "123 D St",
+        city: "San Francisco",
+        state: "California",
+        country: "United States of America",
+        lat: 37.7645357,
+        lng: -122.4730326,
+        name: "D Academy",
+        description: "Place where web developers are created",
+        price: 4123,
+        createdAt: "2021-11-19 20:39:36",
+        updatedAt: "2021-11-19 20:39:36"
+      },
+      {
+        ownerId: 2,
+        address: "123 E St",
+        city: "San Francisco",
+        state: "California",
+        country: "United States of America",
+        lat: 37.7645357,
+        lng: -122.4730326,
+        name: "E Academy",
+        description: "Place where web developers are created",
+        price: 5123,
+        createdAt: "2021-11-19 20:39:36",
+        updatedAt: "2021-11-19 20:39:36"
+      },
+      {
+        ownerId: 3,
+        address: "123 F St",
+        city: "San Francisco",
+        state: "California",
+        country: "United States of America",
+        lat: 37.7645357,
+        lng: -122.4730326,
+        name: "F Academy",
+        description: "Place where web developers are created",
+        price: 6123,
+        createdAt: "2021-11-19 20:39:36",
+        updatedAt: "2021-11-19 20:39:36"
+      },
+      {
+        ownerId: 1,
+        address: "123 G St",
+        city: "San Francisco",
+        state: "California",
+        country: "United States of America",
+        lat: 37.7645357,
+        lng: -122.4730326,
+        name: "G Academy",
+        description: "Place where web developers are created",
+        price: 7123,
+        createdAt: "2021-11-19 20:39:36",
+        updatedAt: "2021-11-19 20:39:36"
       }
     ], {});
   },
@@ -74,7 +130,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ["A Academy","B Academy","C Academy"] }
+      name: { [Op.in]: ["A Academy","B Academy","C Academy","D Academy","E Academy","F Academy","G Academy"] }
     }, {});
   }
 };

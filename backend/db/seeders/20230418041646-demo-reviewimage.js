@@ -22,17 +22,17 @@ module.exports = {
       {
         reviewId: 1,
         spotId: 1,
-        url: 'image url'
+        url: 'https://imgur.com/IXqwOJR'
       },
       {
         reviewId: 1,
         spotId: 1,
-        url: 'image url'
+        url: 'https://imgur.com/i8yl1cP'
       },
       {
         reviewId: 3,
         spotId: 3,
-        url: 'image url'
+        url: 'https://imgur.com/zzlYwDr'
       }
     ], {});
   },
