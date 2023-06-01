@@ -37,3 +37,7 @@ button[disabled] {
   width: 220px;
   margin: 3px;
 }
+
+.signupButton {
+  width: 100px;
+}

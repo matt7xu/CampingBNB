@@ -128,7 +128,7 @@ function SignupFormPage() {
           />
         </label>
 
-        <button type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
+        <button className="signupButton" type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
       </form>
     </>
   );
