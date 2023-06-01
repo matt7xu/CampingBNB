@@ -16,15 +16,15 @@ function SignupFormPage() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-      const error = {};
-      if (username.length < 4) {
-        error.username = "Username field is less than 4 characters"
-      }
-      if (password.length < 6) {
-        error.password = "Password field is less than 6 characters"
-      }
-      if (!email.includes('@')) errors.email = 'Please provide a valid Email';
-      setErrors(error);
+    const error = {};
+    if (username.length < 4) {
+      error.username = "Username field is less than 4 characters"
+    }
+    if (password.length < 6) {
+      error.password = "Password field is less than 6 characters"
+    }
+    if (!email.includes('@')) errors.email = 'Please provide a valid Email';
+    setErrors(error);
   }, [username, password, email])
 
   if (sessionUser) return <Redirect to="/" />;
@@ -61,6 +61,13 @@ function SignupFormPage() {
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+        {errors.email && <p className="error">{errors.email}</p>}
+        {errors.username && <p className="error">{errors.username}</p>}
+        {errors.firstName && <p className="error">{errors.firstName}</p>}
+        {errors.lastName && <p className="error">{errors.lastName}</p>}
+        {errors.password && <p className="error">{errors.password}</p>}
+        {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+        {errors.new && <p className="error">{errors.new}</p>}
         <label>
           Email
           <input
@@ -70,7 +77,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.email && <p className="error">{errors.email}</p>}
+
         <label>
           Username
           <input
@@ -80,7 +87,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.username && <p className="error">{errors.username}</p>}
+
         <label>
           First Name
           <input
@@ -90,7 +97,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.firstName && <p className="error">{errors.firstName}</p>}
+
         <label>
           Last Name
           <input
@@ -100,7 +107,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.lastName && <p className="error">{errors.lastName}</p>}
+
         <label>
           Password
           <input
@@ -110,7 +117,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.password && <p className="error">{errors.password}</p>}
+
         <label>
           Confirm Password
           <input
@@ -120,8 +127,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-        {errors.new && <p className="error">{errors.new}</p>}
+
         <button type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
       </form>
     </>
