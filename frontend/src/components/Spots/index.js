@@ -17,19 +17,21 @@ const Spots = () => {
     <>
       <div className="allSpots">
         {allSpots.map(spot => (
-            <div className="spotItem">
-              <Link to={`/spots/${spot.id}`}>
-                <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
-              </Link>
+          <div className="spotItem">
+            <Link to={`/spots/${spot.id}`}>
+              <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
+            </Link>
+            <div>
+              <div>{spot.city}, {spot.state}</div>
+              <div>${spot.price} night</div>
               <div>
-                <div>{spot.city}, {spot.state}</div>
-                <div>${spot.price} night</div>
-                <div>
-                  <i class="fas fa-star" />
-                  {spot.avgRating}
-                </div>
+                <i class="fas fa-star" />
+                {spot.avgRating !== null
+                  ? spot.avgRating
+                  : "New"}
               </div>
             </div>
+          </div>
         ))}
       </div>
     </>

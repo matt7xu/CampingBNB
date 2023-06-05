@@ -32,9 +32,6 @@
   display: none
 }
 
-button {
-  width: 50px
-}
 
 .logoutButton {
   width: 80px
@@ -42,4 +39,8 @@ button {
 
 .loginSignup {
   list-style-type: none;
+}
+
+.profileButton {
+  width: 50px
 }

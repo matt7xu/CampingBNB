@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -10,6 +10,17 @@ const LoginFormPage = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const error = {};
+    if (credential.length < 4) {
+      error.credential = "Username field is less than 4 characters"
+    }
+    if (password.length < 6) {
+      error.password = "Password field is less than 6 characters"
+    }
+    setErrors(error);
+  }, [credential, password])
 
   if (sessionUser) return <Redirect to="/" />;
 
@@ -36,6 +47,7 @@ const LoginFormPage = () => {
   return (
     <div className="login-container">
       <h1>Log In</h1>
+      {errors.credential && <p className="error">{errors.credential}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -55,10 +67,10 @@ const LoginFormPage = () => {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button className="loginButton" type="submit">Log In</button>
+
+        <button className="loginButton" type="submit" disabled={Object.keys(errors).length > 0}>Log In</button>
       </form>
-      <button className="demoLoginButton" onClick={demoLogin} type="submit">Log in as Demo User</button>
+      <button className="demoLoginButton"  onClick={demoLogin} type="submit">Log in as Demo User</button>
     </div>
   );
 }
