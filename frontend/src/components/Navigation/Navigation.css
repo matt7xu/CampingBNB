@@ -32,23 +32,14 @@
   display: none
 }
 
-.homeNav {
-  display: flex;
-  border-radius: 20px;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 12px;
-}
-
-.homeNav>li {
-  padding: 10px 20px 10px 0px;
-  list-style-type: none
-}
-
 button {
   width: 50px
 }
 
 .logoutButton {
   width: 80px
+}
+
+.loginSignup {
+  list-style-type: none;
 }

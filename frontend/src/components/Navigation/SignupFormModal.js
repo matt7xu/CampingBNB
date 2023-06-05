@@ -1,20 +1,26 @@
-import SignupFormPage from "../SignupFormPage"
+import React, { useState } from "react";
+import { Modal } from "../../context/Modal";
+import SignupFormPage from "../SignupFormPage";
 
-function SignupFormModal({ setModal }) {
-  const onClick = (e) => {
-    e.stopPropagation();
-    if (e.target.className === "modal") {
-      setModal(false);
-    }
-  };
+function SignUpFormModal({ onClick }) {
+  const [showModal, setShowModal] = useState(false);
 
   return (
-    <div onClick={onClick}>
-      <div>
-        <SignupFormPage />
-      </div>
-    </div>
+    <>
+      <button
+        onClick={() => {
+          setShowModal(true);
+        }}
+      >
+        Sign Up
+      </button>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <SignupFormPage />
+        </Modal>
+      )}
+    </>
   );
 }
 
-export default SignupFormModal
+export default SignUpFormModal;

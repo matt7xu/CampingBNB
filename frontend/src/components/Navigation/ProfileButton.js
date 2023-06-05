@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from './LoginFormModal';
 import SignupFormModal from './SignupFormModal';
 import './Navigation.css';
@@ -41,7 +40,7 @@ function ProfileButton({ user }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
+    <div className="profile-button">
       <button onClick={openMenu} className="profileButton">
         <i className="fas fa-bars"></i>
         <i className="fas fa-user-circle"></i>
@@ -49,28 +48,24 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>Hi, {user.firstName}</li>
+            <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
             <li>
               <button className="logoutButton" onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
-          <>
-            <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
-            <OpenModalMenuItem
-              itemText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </>
+          <div className="loginSignup">
+          <li>
+            <LoginFormModal />
+          </li>
+          <li>
+            <SignupFormModal />
+          </li>
+        </div>
         )}
       </ul>
-    </>
+    </div>
   );
 }
 

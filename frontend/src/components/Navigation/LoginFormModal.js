@@ -1,20 +1,18 @@
-import LoginFormPage from "../LoginFormPage";
+import React, { useState } from 'react';
+import { Modal } from '../../context/Modal';
+import LoginFormPage from '../LoginFormPage';
 
-function LoginFormModal({ setModal }) {
-  const onClick = (e) => {
-    e.stopPropagation();
-    if (e.target.className === "modal") {
-      setModal(false);
-    }
-  };
-
+function LoginFormModal() {
+  const [showModal, setShowModal] = useState(false);
   return (
-    <div onClick={onClick}>
-      <div>
-        <LoginFormPage />
-      </div>
-    </div>
+    <>
+      <button onClick={() => setShowModal(true)}>Log In</button>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <LoginFormPage />
+        </Modal>
+      )}
+    </>
   );
 }
-
-export default LoginFormModal
+export default LoginFormModal;
