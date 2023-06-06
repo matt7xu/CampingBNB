@@ -123,7 +123,6 @@ router.get(
 //Get all Reviews by a Spot's id
 router.get(
   '/:id/reviews',
-  requireAuth,
   async (req, res, next) => {
     const spotId = +req.params.id;
 
@@ -171,7 +170,6 @@ router.get(
 //Get details of a Spot from an id
 router.get(
   '/:id',
-  requireAuth,
   async (req, res, next) => {
     const id = +req.params.id;
 

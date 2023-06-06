@@ -40,14 +40,44 @@
   width: 150px;
 }
 
-.reserve-wrapper {
+.image3 {
+  height: 100px;
+  width: 150px;
+}
+
+.image4 {
+  height: 100px;
+  width: 150px;
+}
+
+.calloutBox {
   border: 1px solid black;
-  width: 200px;
+  margin: auto;
   border-radius: 10px;
   padding: 10px;
-  float:right
+  grid-area: 1 / 3 / 3 / 4;
 }
 
 .reserve-button {
   width: 250px;
+}
+
+.hostDescriptionCalloutBox {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.host {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.description {
+  grid-area: 2 / 1 / 6 / 3;
+}
+
+.reviews-container {
+  border-top:1px solid rgb(0, 0, 0);
 }
