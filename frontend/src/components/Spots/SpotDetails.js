@@ -4,14 +4,20 @@ import { useParams } from 'react-router-dom';
 import "./Spots.css";
 import * as spotsActions from "../../store/spots";
 import Reviews from "../Reviews";
+import PostReviewModal from "../Reviews/PostReviewModal";
 
 const SpotDetails = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const spotsObj = useSelector(state => state.spots);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showButton, setshowButton] = useState(true);
   const spot = spotsObj[spotId];
+  const user = useSelector(state => state.session.user);
 
+  const allReviews = useSelector(state => Object.values(state.reviews).filter(
+    (review) => review.userId === user.id && review.spotId === spot.id
+  ));
 
   useEffect(() => {
     dispatch(
@@ -21,6 +27,23 @@ const SpotDetails = () => {
 
   const handleReserve = () => {
     alert("Feature coming soon");
+  }
+
+  let pageshowing;
+  if (spot) {
+    if (spot.Owner) {
+      if (spot.Owner.id) {
+        if (user && user.id !== spot.Owner.id && allReviews.length < 1) {
+          pageshowing = (
+            <PostReviewModal spot={spot} />
+          )
+        }
+      }
+    }
+  } else {
+    pageshowing = (
+      <></>
+    )
   }
 
   return (
@@ -65,13 +88,13 @@ const SpotDetails = () => {
                       : `${spot.numReviews} Reviews`}
                 </span>
               </div>
-              <button id="reserve-button" onClick={handleReserve}>
+              <button className="reserve-button" onClick={handleReserve}>
                 Reserve
               </button>
             </div>
           </div>
           <div className="reviews-container">
-              <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
             <span>
               {spot.avgStarRating
                 ? String(spot.avgStarRating).length === 1
@@ -87,7 +110,13 @@ const SpotDetails = () => {
                   ? `${spot.numReviews} Review`
                   : `${spot.numReviews} Reviews`}
             </span>
-            <Reviews spot={spot}/>
+            <div className="postReviewButtonDiv">
+              {pageshowing}
+              {/* {showButton && <PostReviewModal spot={spot} />} */}
+            </div>
+            <div className="reviewDiv">
+              <Reviews spot={spot} />
+            </div>
           </div>
         </>
       )}

@@ -39,7 +39,7 @@ const Reviews = ({ spot }) => {
             ) : (
               <div>
                 {sorted.map((each, index) => (
-                  <div className="reviews">
+                  <div className="reviews" key={`${index}`}>
                     <div>{each.User.firstName}</div>
                     <div>{reviewMonth(each.createdAt)}</div>
                     <div>{each.review}</div>

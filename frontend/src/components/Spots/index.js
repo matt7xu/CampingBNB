@@ -13,10 +13,12 @@ const Spots = () => {
     dispatch(spotActions.loadAllSpots());
   }, [dispatch]);
 
+  const reverseOrderSpots = [...allSpots].reverse();
+
   return (
     <>
       <div className="allSpots">
-        {allSpots.map(spot => (
+        {reverseOrderSpots.map(spot => (
           <div className="spotItem">
             <Link to={`/spots/${spot.id}`}>
               <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
@@ -26,7 +28,7 @@ const Spots = () => {
               <div>${spot.price} night</div>
               <div>
                 <i class="fas fa-star" />
-                {spot.avgRating !== null
+                {spot.avgRating !== "0.0"
                   ? spot.avgRating
                   : "New"}
               </div>

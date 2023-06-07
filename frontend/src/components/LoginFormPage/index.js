@@ -10,22 +10,26 @@ const LoginFormPage = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [toggleSubmit, setToggleSubmit] = useState(false);
 
   useEffect(() => {
-    const error = {};
-    if (credential.length < 4) {
-      error.credential = "Username field is less than 4 characters"
+    if (toggleSubmit) {
+      const error = {};
+      if (credential.length < 4) {
+        error.credential = "Username field is less than 4 characters"
+      }
+      if (password.length < 6) {
+        error.password = "Password field is less than 6 characters"
+      }
+      setErrors(error);
     }
-    if (password.length < 6) {
-      error.password = "Password field is less than 6 characters"
-    }
-    setErrors(error);
-  }, [credential, password])
+  }, [credential, password, toggleSubmit])
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setToggleSubmit(true);
     setErrors({});
     return dispatch(sessionActions.login({ credential, password })).catch(
       async (res) => {
@@ -68,9 +72,9 @@ const LoginFormPage = () => {
           />
         </label>
 
-        <button className="loginButton" type="submit" disabled={Object.keys(errors).length > 0}>Log In</button>
+        <button className="loginButton" type="submit" disabled={password.length<1}>Log In</button>
       </form>
-      <button className="demoLoginButton"  onClick={demoLogin} type="submit">Log in as Demo User</button>
+      <button className="demoLoginButton" onClick={demoLogin} type="submit">Demo User</button>
     </div>
   );
 }

@@ -10,11 +10,16 @@ function Navigation({ isLoaded }){
 
   return (
     <ul className="homeNav">
-      <li>
+      <li className="navLogo">
         <NavLink exact to="/"><img className="logo" src={logo} alt=""></img></NavLink>
       </li>
+      {isLoaded && sessionUser &&(
+        <li className="navCreate">
+          <NavLink to="/spots/new">Create a new spot</NavLink>
+        </li>
+      )}
       {isLoaded && (
-        <li>
+        <li className="navButton">
           <ProfileButton user={sessionUser} />
         </li>
       )}

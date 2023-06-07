@@ -14,24 +14,27 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [toggleSubmit, setToggleSubmit] = useState(false);
 
   useEffect(() => {
-    const error = {};
-    if (username.length < 4) {
-      error.username = "Username field is less than 4 characters"
+    if (toggleSubmit) {
+      const error = {};
+      if (username.length < 4) {
+        error.username = "Username field is less than 4 characters"
+      }
+      if (password.length < 6) {
+        error.password = "Password field is less than 6 characters"
+      }
+      if (!email.includes('@')) errors.email = 'Please provide a valid Email';
+      setErrors(error);
     }
-    if (password.length < 6) {
-      error.password = "Password field is less than 6 characters"
-    }
-    if (!email.includes('@')) errors.email = 'Please provide a valid Email';
-    setErrors(error);
-  }, [username, password, email])
+  }, [username, password, email, toggleSubmit, errors])
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setToggleSubmit(true);
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -128,7 +131,7 @@ function SignupFormPage() {
           />
         </label>
 
-        <button className="signupButton" type="submit" disabled={Object.keys(errors).length > 0}>Sign Up</button>
+        <button className="signupSubmitButton" type="submit" disabled={confirmPassword.length < 1}>Sign Up</button>
       </form>
     </>
   );

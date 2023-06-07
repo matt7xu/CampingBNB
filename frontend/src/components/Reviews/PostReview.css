@@ -1,0 +1,43 @@
+.star-rating button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+}
+
+.on {
+  color: #000;
+}
+
+.off {
+  color: #ccc;
+}
+
+.postReviewContainer {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.star-rating-container {
+  display: inline-grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  margin: 10px;
+}
+
+.reviewTextarea{
+  width: 95%;
+  height: 150px;
+  resize: none;
+  background-color: rgb(209, 228, 241);
+  border: 2px solid black;
+}
+
+.star-rating {
+  grid-area: 1 / 1 / 2 / 8;
+}
