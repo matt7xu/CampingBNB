@@ -13,7 +13,7 @@ const UpdateSpot = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const currentSpot = spots[spotId];
-  const previewImageTem = currentSpot.previewImage.split('http');
+  //const previewImageTem = currentSpot.previewImage.split('http');
 
   const [country, setCountry] = useState(currentSpot.country);
   const [address, setAddress] = useState(currentSpot.address);
@@ -24,7 +24,7 @@ const UpdateSpot = () => {
   const [name, setName] = useState(currentSpot.name);
   const [description, setDescription] = useState(currentSpot.description);
   const [price, setPrice] = useState(currentSpot.price);
-  const [previewImage, setPreviewImage] = useState('http'+ previewImageTem[1]);
+  const [previewImage, setPreviewImage] = useState(currentSpot.previewImage);
   const [image0, setImage0] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
@@ -77,7 +77,7 @@ const UpdateSpot = () => {
 
     const newSpot = { address, city, state, country, lat, lng, name, description, price, ownerId: user.id };
 
-    const spot = await dispatch(spotActions.updateSpotThunk(newSpot))
+    const spot = await dispatch(spotActions.updateSpotThunk(newSpot, spotId))
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {

@@ -41,3 +41,10 @@
 .star-rating {
   grid-area: 1 / 1 / 2 / 8;
 }
+
+.SubmitReviewButtonDiv {
+  height: 30px;
+  background-color: rgb(250, 74, 74);
+  color: white;
+  margin: 10px;
+}
