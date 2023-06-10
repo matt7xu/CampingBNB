@@ -22,8 +22,6 @@ const SpotDetails = () => {
     dispatch(
       spotsActions.loadSpotByIdThunk(spotId)
     ).then(() => setIsLoaded(true))
-
-    console.log('77777', spot)
   }, [dispatch, spotId])
 
   const handleReserve = () => {
@@ -75,7 +73,7 @@ const SpotDetails = () => {
                 <i className="fas fa-star"></i>
                 <span>
                   {spot.avgStarRating
-                    ? Number(spot.avgStarRating).toFixed(1)
+                    ? spot.avgStarRating.toFixed(1)
                     : "New"}
                 </span>
                 <span>{Number(spot.numReviews) === 0 ? "" : "·"} </span>
