@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import DeleteSpotModal from "./DeleteSpotModal";
 import "./CreateSpot.css";
 
-function ManageLocations({ isLoaded }) {
+function ManageSpots({ isLoaded }) {
   const dispatch = useDispatch();
   const SpotsState = useSelector((state) => state.spots);
   const allSpots = Object.values(SpotsState);
@@ -65,4 +65,4 @@ function ManageLocations({ isLoaded }) {
   );
 }
 
-export default ManageLocations;
+export default ManageSpots;
