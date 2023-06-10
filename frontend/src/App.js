@@ -9,6 +9,8 @@ import Navigation from "./components/Navigation";
 import Spots from "./components/Spots/index";
 import SpotDetails from "./components/Spots/SpotDetails";
 import CreateSpot from "./components/Spots/createSpot";
+import ManageSpots from "./components/Spots/ManageSpots";
+import UpdateSpot from "./components/Spots/UpdateSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,8 +36,14 @@ function App() {
           <Route path="/spots/new">
             <CreateSpot />
           </Route>
+          <Route path="/spots/:spotId/edit">
+            <UpdateSpot />
+          </Route>
           <Route path="/spots/:spotId">
             <SpotDetails />
+          </Route>
+          <Route path="/owned/spots">
+            <ManageSpots isLoaded={isLoaded} />
           </Route>
           <Route>
             <h1>Page Not Found</h1>
