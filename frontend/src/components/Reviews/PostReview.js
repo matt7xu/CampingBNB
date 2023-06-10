@@ -58,7 +58,7 @@ function PostReview({ spot }) {
       <button
 
         type="submit"
-        disabled={review.length < 10}
+        disabled={review.length < 10 || stars < 1}
       >
         Submit Your Review
       </button>

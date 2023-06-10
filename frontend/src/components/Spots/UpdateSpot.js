@@ -1,32 +1,35 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from "../../store/spots";
 import * as imageActions from "../../store/image";
 import "./CreateSpot.css";
 
 
-const CreateSpot = () => {
+const UpdateSpot = () => {
   const user = useSelector(state => state.session.user);
+  const spots = useSelector(state => state.spots);
   const history = useHistory();
   const dispatch = useDispatch();
+  const { spotId } = useParams();
+  const currentSpot = spots[spotId];
+  const previewImageTem = currentSpot.previewImage.split('http');
 
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
+  const [country, setCountry] = useState(currentSpot.country);
+  const [address, setAddress] = useState(currentSpot.address);
+  const [city, setCity] = useState(currentSpot.city);
+  const [state, setState] = useState(currentSpot.state);
+  const [lat, setLat] = useState(currentSpot.lat);
+  const [lng, setLng] = useState(currentSpot.lng);
+  const [name, setName] = useState(currentSpot.name);
+  const [description, setDescription] = useState(currentSpot.description);
+  const [price, setPrice] = useState(currentSpot.price);
+  const [previewImage, setPreviewImage] = useState('http'+ previewImageTem[1]);
   const [image0, setImage0] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
   const [image3, setImage3] = useState("");
   const [errors, setErrors] = useState({});
-  // const [toggleSubmit, setToggleSubmit] = useState(false);
 
   useEffect(() => {
     // if (toggleSubmit) {
@@ -57,7 +60,6 @@ const CreateSpot = () => {
       errorObj.image3 = "Image URL must end in .png, .jpg, or .jpeg";
     }
     setErrors(errorObj);
-    // }
   }, [address, city, state, country, lat, lng, name, description, price, previewImage, image0, image1, image2, image3]);
 
   const checkImage = (urlString) => {
@@ -75,7 +77,7 @@ const CreateSpot = () => {
 
     const newSpot = { address, city, state, country, lat, lng, name, description, price, ownerId: user.id };
 
-    const spot = await dispatch(spotActions.addSpotThunk(newSpot))
+    const spot = await dispatch(spotActions.updateSpotThunk(newSpot))
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
@@ -128,21 +130,8 @@ const CreateSpot = () => {
           })
       }
     }
+
     setErrors({});
-    setCountry('');
-    setAddress('');
-    setCity('');
-    setState('');
-    setLat('');
-    setLng('');
-    setDescription('');
-    setName('');
-    setPrice('');
-    setPreviewImage('');
-    setImage0('');
-    setImage1('');
-    setImage2('');
-    setImage3('');
 
     if (spot) {
       history.push(`/spots/${spot.id}`);
@@ -152,7 +141,7 @@ const CreateSpot = () => {
   return (
     <div>
       <div className="headerDiv">
-        <h1>Create a new Spot</h1>
+        <h1>Update your Spot</h1>
         <h3>Where's your place located?</h3>
         <p>Guests will only get your exact address once they booked a reservation.</p>
       </div>
@@ -346,11 +335,11 @@ const CreateSpot = () => {
           {errors.image4 && <p className="errors">{errors.image4}</p>}
         </div>
         <div className="SubmitButtonDiv">
-          <button type='submit' disabled={Object.values(errors).length > 0}>Create Spot</button>
+          <button type='submit' className="UpdateButtonDiv" disabled={Object.values(errors).length > 0}>Update Spot</button>
         </div>
       </form>
     </div>
   )
 };
 
-export default CreateSpot;
+export default UpdateSpot;

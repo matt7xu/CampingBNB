@@ -1,0 +1,93 @@
+.input-box {
+  float: left;
+  background-color: rgb(209, 228, 241);
+}
+
+.createSpotForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(9, 0.1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  margin-right: 20%;
+}
+
+.CountryDiv {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.StreetDiv {
+  grid-area: 2 / 1 / 3 / 3;
+}
+
+.CityDiv {
+  grid-area: 3 / 1 / 4 / 2;
+}
+
+/* lat */
+.StateDiv {
+  grid-area: 3 / 2 / 4 / 3;
+}
+
+/* state */
+.LatDiv {
+  grid-area: 4 / 1 / 5 / 2;
+  margin-left: 20px;
+  width: 80%;
+}
+
+.LonDiv {
+  grid-area: 4 / 2 / 5 / 3;
+}
+
+.DescriptionDiv {
+  grid-area: 5 / 1 / 6 / 3;
+}
+
+.NameDiv {
+  grid-area: 6 / 1 / 7 / 3;
+}
+
+.PriceDiv {
+  grid-area: 7 / 1 / 8 / 3;
+}
+
+.imageDiv {
+  grid-area: 8 / 1 / 9 / 3;
+  border-bottom: 2px solid rgb(0, 0, 0);
+  margin-bottom: 20px;
+}
+
+.SubmitButtonDiv {
+  grid-area: 9 / 1 / 10 / 3;
+  text-align: center;
+}
+
+.headerDiv {
+  text-align: start;
+  margin-left: 30%;
+}
+
+.PriceLabelDiv {
+  float: left;
+  margin-top: 5px;
+}
+
+.errors {
+  margin-top: 5px;
+}
+
+.DescriptionDiv-box {
+  width: 90%;
+  height: 20%;
+  background-color: rgb(209, 228, 241);
+}
+
+.ImageError {
+  margin: 20px;
+}
+
+.UpdateButtonDiv {
+background-color: rgb(248, 59, 59);
+color: white;
+}

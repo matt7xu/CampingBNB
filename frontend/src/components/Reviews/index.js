@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as reviewActions from "../../store/review.js";
+import DeleteReviewModal from "./DeleteReviewModal"
 import "./Reviews.css";
 
 const Reviews = ({ spot }) => {
@@ -12,6 +13,7 @@ const Reviews = ({ spot }) => {
     if (review.spotId === spotId) return true;
     return false;
   }));
+
   useEffect(() => {
     dispatch(reviewActions.loadReviewsThunk(spotId))
       .then(() => setIsLoaded(true))
@@ -29,6 +31,14 @@ const Reviews = ({ spot }) => {
     return month + ' ' + year;
   }
 
+  let deletcReviewButton = (review) => {
+     if (review.User.id === review.userId) {
+      return (
+        <DeleteReviewModal review={review} />
+      )
+    } 
+  }
+
   return (
     <>
       {isLoaded && (
@@ -43,9 +53,11 @@ const Reviews = ({ spot }) => {
                     <div>{each.User.firstName}</div>
                     <div>{reviewMonth(each.createdAt)}</div>
                     <div>{each.review}</div>
+                    {deletcReviewButton(each)}
                   </div>
                 ))}
               </div>
+
             )}
         </>
       )}

@@ -11,7 +11,6 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
   const spotsObj = useSelector(state => state.spots);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showButton, setshowButton] = useState(true);
   const spot = spotsObj[spotId];
   const user = useSelector(state => state.session.user);
 
@@ -112,7 +111,6 @@ const SpotDetails = () => {
             </span>
             <div className="postReviewButtonDiv">
               {pageshowing}
-              {/* {showButton && <PostReviewModal spot={spot} />} */}
             </div>
             <div className="reviewDiv">
               <Reviews spot={spot} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { Link } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import LoginFormModal from './LoginFormModal';
 import SignupFormModal from './SignupFormModal';
@@ -50,6 +51,9 @@ function ProfileButton({ user }) {
           <>
             <li>Hello, {user.firstName}</li>
             <li className="emailLi">{user.email}</li>
+          <li className="manageSpotsDiv">
+            <Link to="/owned/spots" style={{color: 'black'}}>Manage Spots</Link>
+          </li>
             <li>
               <button className="logoutButton" onClick={logout}>Log Out</button>
             </li>

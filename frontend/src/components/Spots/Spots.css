@@ -1,11 +1,13 @@
 .spotImage {
-  height: 120px;
-  width: 150px;
+  height: 80%;
+  width: 100%;
 }
 
 .allSpots {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 5px;
+  grid-row-gap: 45px;
   padding: 10px;
 }
 
@@ -20,34 +22,39 @@
 .image-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 0.5fr);
   grid-column-gap: 5px;
-  grid-row-gap: 0px;
+  grid-row-gap: 5px;
 }
 
 .image0 {
-  height: 200px;
-  width: 250px;
+  height: 100%;
+  width: 100%;
+  grid-area: 1 / 1 / 3 / 3;
 }
 
 .image1 {
-  height: 100px;
-  width: 150px;
+  height: 50%;
+  width: 100%;
+  grid-area: 1 / 3 / 2 / 4;
 }
 
 .image2 {
-  height: 100px;
-  width: 150px;
+  height: 50%;
+  width: 100%;
+  grid-area: 1 / 4 / 2 / 5;
 }
 
 .image3 {
-  height: 100px;
-  width: 150px;
+  height: 50%;
+  width: 100%;
+  grid-area: 2 / 3 / 3 / 4;
 }
 
 .image4 {
-  height: 100px;
-  width: 150px;
+  height: 50%;
+  width: 100%;
+  grid-area: 2 / 4 / 3 / 5;
 }
 
 .calloutBox {
@@ -91,8 +98,6 @@
 }
 
 .createSpotForm {
-  display: flex;
-  justify-content: center;
   margin-left: 30%;
 }
 
@@ -139,10 +144,35 @@
   display: block;
   transition: 800ms;
   opacity: 1;
-  
+
 }
 
 .show.active {
   transform: translateY(100px) scale(0);
   opacity: 0;
+}
+
+.deleteYesButton {
+  background-color: red;
+  color: white;
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  height: 50px;
+}
+
+.deleteNoButton {
+  background-color: rgb(74, 72, 72);
+  color: white;
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+.deleteSpotButtonDiv {
+  margin: 20px;
+}
+
+input {
+  float: left;
 }
