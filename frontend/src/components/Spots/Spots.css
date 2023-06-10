@@ -1,0 +1,148 @@
+.spotImage {
+  height: 120px;
+  width: 150px;
+}
+
+.allSpots {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+.spotItem {
+  padding: 10px;
+}
+
+.location {
+  margin-bottom: 10px;
+}
+
+.image-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 0px;
+}
+
+.image0 {
+  height: 200px;
+  width: 250px;
+}
+
+.image1 {
+  height: 100px;
+  width: 150px;
+}
+
+.image2 {
+  height: 100px;
+  width: 150px;
+}
+
+.image3 {
+  height: 100px;
+  width: 150px;
+}
+
+.image4 {
+  height: 100px;
+  width: 150px;
+}
+
+.calloutBox {
+  border: 1px solid black;
+  margin: auto;
+  border-radius: 10px;
+  padding: 10px;
+  grid-area: 1 / 3 / 3 / 4;
+}
+
+.reserve-button {
+  width: 250px;
+}
+
+.hostDescriptionCalloutBox {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.host {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.description {
+  grid-area: 2 / 1 / 6 / 3;
+}
+
+.reviews-container {
+  border-top: 1px solid rgb(0, 0, 0);
+}
+
+.errors {
+  color: red;
+  font-size: 12px;
+  height: 15px;
+  width: 220px;
+  margin: 3px;
+}
+
+.createSpotForm {
+  display: flex;
+  justify-content: center;
+  margin-left: 30%;
+}
+
+.nameSection {
+  margin-top: 20px;
+  border-top: 1px solid rgb(0, 0, 0);
+}
+
+.priceSection {
+  margin-top: 20px;
+  border-top: 1px solid rgb(0, 0, 0);
+}
+
+.imageSection {
+  margin-top: 20px;
+  border-top: 1px solid rgb(0, 0, 0);
+}
+
+.stateLabel {
+  display: inline-block;
+}
+
+.reserve-button {
+  background-color: rgb(219, 26, 26);
+  color:white;
+}
+
+.postReviewClassName{
+  background-color: rgb(78, 77, 77);
+  color:white;
+  box-shadow: 5px 5px #000000;
+  height:30px
+}
+
+.reviewDiv{
+  margin-top: 30px;
+}
+
+.postReviewButtonDiv{
+  margin-top: 10px;
+}
+
+.show {
+  display: block;
+  transition: 800ms;
+  opacity: 1;
+  
+}
+
+.show.active {
+  transform: translateY(100px) scale(0);
+  opacity: 0;
+}

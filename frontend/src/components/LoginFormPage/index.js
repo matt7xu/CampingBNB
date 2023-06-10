@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -10,11 +10,26 @@ const LoginFormPage = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [toggleSubmit, setToggleSubmit] = useState(false);
+
+  useEffect(() => {
+    if (toggleSubmit) {
+      const error = {};
+      if (credential.length < 4) {
+        error.credential = "Username field is less than 4 characters"
+      }
+      if (password.length < 6) {
+        error.password = "Password field is less than 6 characters"
+      }
+      setErrors(error);
+    }
+  }, [credential, password, toggleSubmit])
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setToggleSubmit(true);
     setErrors({});
     return dispatch(sessionActions.login({ credential, password })).catch(
       async (res) => {
@@ -26,22 +41,17 @@ const LoginFormPage = () => {
 
   const demoLogin = (e) => {
     e.preventDefault();
-    setErrors({});
     const demo = {
       credential: "Demo-lition",
       password: "password"
     }
-    return dispatch(sessionActions.login(demo)).catch(
-      async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      }
-    );
+    return dispatch(sessionActions.login(demo))
   }
 
   return (
-    <>
+    <div className="login-container">
       <h1>Log In</h1>
+      {errors.credential && <p className="error">{errors.credential}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -61,11 +71,11 @@ const LoginFormPage = () => {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+
+        <button className="loginButton" type="submit" disabled={password.length<1}>Log In</button>
       </form>
-      <button onClick={demoLogin} type="submit">Demo</button>
-    </>
+      <button className="demoLoginButton" onClick={demoLogin} type="submit">Demo User</button>
+    </div>
   );
 }
 

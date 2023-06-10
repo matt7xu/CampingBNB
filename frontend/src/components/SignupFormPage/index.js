@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
+import "./SignupForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -13,11 +14,27 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [toggleSubmit, setToggleSubmit] = useState(false);
+
+  useEffect(() => {
+    if (toggleSubmit) {
+      const error = {};
+      if (username.length < 4) {
+        error.username = "Username field is less than 4 characters"
+      }
+      if (password.length < 6) {
+        error.password = "Password field is less than 6 characters"
+      }
+      if (!email.includes('@')) errors.email = 'Please provide a valid Email';
+      setErrors(error);
+    }
+  }, [username, password, email, toggleSubmit, errors])
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setToggleSubmit(true);
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -31,7 +48,11 @@ function SignupFormPage() {
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors(data.errors);
+          console.log(Object.values(data.errors[0]))
+          const newError = {
+            new: Object.values(data.errors[0])[0]
+          }
+          setErrors(newError);
         }
       });
     }
@@ -39,11 +60,17 @@ function SignupFormPage() {
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
-
   return (
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+        {errors.email && <p className="error">{errors.email}</p>}
+        {errors.username && <p className="error">{errors.username}</p>}
+        {errors.firstName && <p className="error">{errors.firstName}</p>}
+        {errors.lastName && <p className="error">{errors.lastName}</p>}
+        {errors.password && <p className="error">{errors.password}</p>}
+        {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+        {errors.new && <p className="error">{errors.new}</p>}
         <label>
           Email
           <input
@@ -53,7 +80,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+
         <label>
           Username
           <input
@@ -63,7 +90,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+
         <label>
           First Name
           <input
@@ -73,7 +100,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+
         <label>
           Last Name
           <input
@@ -83,7 +110,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+
         <label>
           Password
           <input
@@ -93,7 +120,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+
         <label>
           Confirm Password
           <input
@@ -103,8 +130,8 @@ function SignupFormPage() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+
+        <button className="signupSubmitButton" type="submit" disabled={confirmPassword.length < 1}>Sign Up</button>
       </form>
     </>
   );

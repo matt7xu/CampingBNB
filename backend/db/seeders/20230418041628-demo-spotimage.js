@@ -21,22 +21,42 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: "image url id1",
+      url: "https://i.imgur.com/rrlHXYa.jpeg",
       preview: true
     },
     {
-      spotId: 1,
-      url: "image url id2",
-      preview: false
+      spotId: 2,
+      url: "https://i.imgur.com/z0QlkHR.jpeg",
+      preview: true
     },
     {
       spotId: 3,
-      url: "image url id3",
+      url: "https://i.imgur.com/oBCDd0Z.jpeg",
       preview: true
     },
     {
       spotId: 1,
-      url: "image url id4",
+      url: "https://i.imgur.com/rrAPt2v.jpeg",
+      preview: true
+    },
+    {
+      spotId: 4,
+      url: "https://i.imgur.com/onAxK6W.jpeg",
+      preview: true
+    },
+    {
+      spotId: 5,
+      url: "https://i.imgur.com/jFoufpl.jpeg",
+      preview: true
+    },
+    {
+      spotId: 6,
+      url: "https://i.imgur.com/ZJ6Iot4.jpeg",
+      preview: true
+    },
+    {
+      spotId: 7,
+      url: "https://i.imgur.com/noYHC7C.jpeg",
       preview: true
     }
   ], {});

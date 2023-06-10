@@ -11,14 +11,47 @@ input {
   padding-left: 5px;
 }
 
-button {
+.loginButton {
   height: 30px;
   width: 100px;
-  background: rgb(60, 56, 56);
+  background: rgb(230, 78, 78);
   color: rgb(255, 255, 255);
   font-size: 1.1em;
+  margin: 10px;
+  align-self: center;
+}
+
+.demoLoginButton {
+  width: 50px;
+  color: rgb(45, 63, 32);
+  font-size: 1.1em;
+  padding: 0;
+  border: none;
+  background: none;
+  border-bottom: 1px solid rgb(45, 63, 32);
+  margin: auto;
 }
 
 button:hover {
   cursor: pointer;
+}
+
+.demoLoginButton {
+  width: 200px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px 20px 20px;
+  background-color: white;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  height: 15px;
+  width: 220px;
+  margin: 3px;
 }

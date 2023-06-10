@@ -32,10 +32,34 @@ module.exports = {
       stars: 4,
     },
     {
-      userId: 3,
+      userId: 2,
       spotId: 3,
       review: "This was not an awesome spot!",
+      stars: 2,
+    },
+    {
+      userId: 3,
+      spotId: 4,
+      review: "This was not an awesome spot!",
+      stars: 1,
+    },
+    {
+      userId: 1,
+      spotId: 5,
+      review: "This was not an awesome spot!",
       stars: 3,
+    },
+    {
+      userId: 2,
+      spotId: 6,
+      review: "This was not an awesome spot!",
+      stars: 1,
+    },
+    {
+      userId: 3,
+      spotId: 7,
+      review: "This was not an awesome spot!",
+      stars: 2,
     }
   ], {});
   },

@@ -1,7 +1,22 @@
 .homeNav {
-  display: flex;
-  justify-content: space-between;
   list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.navLogo {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.navCreate {
+  grid-area: 1 / 4 / 2 / 5;
+}
+
+.navButton {
+  grid-area: 1 / 5 / 2 / 6;
 }
 
 .beforeLogin {
@@ -12,12 +27,68 @@
   gap: 5%;
 }
 
- .profile-dropdown > li {
+.profile-dropdown {
+  position: absolute;
+  border: 2px solid black;
+  background: rgb(255, 255, 255);
+  padding: 10px 0px 0px 0px;
+}
+
+.profile-dropdown>li {
   margin: 0;
   display: block;
   background-color: white;
 }
 
-.profile-dropdown > li:hover {
+.profile-dropdown>li:hover {
   background-color: lightgray;
+}
+
+.logo {
+  width: 100px;
+  margin: auto;
+  position: absolute;
+}
+
+.hidden {
+  display: none
+}
+
+
+.logoutButton {
+  width: 80px;
+  background-color: rgb(219, 26, 26);
+  color:white;
+  width: 90px;
+  border-radius: 20px;
+  border: 2px solid black;
+}
+
+.loginSignup {
+  list-style-type: none;
+}
+
+.profileButton {
+  margin-left: 10px;
+  width: 70px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 2px solid black;
+}
+
+.emailLi {
+  border-bottom: 1px solid #040404;
+}
+
+.signinButton {
+  background:none;
+  border:none;
+}
+
+.signupButton {
+  background:none;
+  border:none;
+  color: black;
+  width: 60px;
+  font-size: small;
 }

@@ -1,44 +1,28 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import * as sessionActions from '../../store/session';
 import './Navigation.css';
+import logo from "./logo.png"
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
-  const dispatch = useDispatch();
-
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(sessionActions.logout());
-  };
-
-  let sessionLinks;
-  if (sessionUser) {
-    sessionLinks = (
-      <li className='afterLogin'>
-        <ProfileButton user={sessionUser} />
-        <> </>
-        <button onClick={logout}>Log Out</button>
-      </li>
-    );
-  } else {
-    sessionLinks = (
-      <li className='beforeLogin'>
-        <NavLink to="/login">Log In</NavLink>
-        <>  /  </>
-        <NavLink to="/signup">Sign Up</NavLink>
-      </li>
-    );
-  }
 
   return (
     <ul className="homeNav">
-      <li>
-        <NavLink exact to="/"><i className="fas fa-home"></i></NavLink>
+      <li className="navLogo">
+        <NavLink exact to="/"><img className="logo" src={logo} alt=""></img></NavLink>
       </li>
-      {isLoaded && sessionLinks}
+      {isLoaded && sessionUser &&(
+        <li className="navCreate">
+          <NavLink to="/spots/new">Create a new spot</NavLink>
+        </li>
+      )}
+      {isLoaded && (
+        <li className="navButton">
+          <ProfileButton user={sessionUser} />
+        </li>
+      )}
     </ul>
   );
 }
