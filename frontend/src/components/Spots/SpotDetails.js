@@ -47,7 +47,7 @@ const SpotDetails = () => {
 
   const getSpotAvgRating =(spot) => {
     if(spot.avgStarRating) {
-      return spot.avgStarRating.toFixed(1)
+      return Number(spot.avgStarRating).toFixed(1)
     }
     return 'New';
   }
