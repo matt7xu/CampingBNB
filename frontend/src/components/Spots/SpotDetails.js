@@ -45,8 +45,8 @@ const SpotDetails = () => {
     )
   }
 
-  const getSpotAvgRating =(spot) => {
-    if(spot.avgStarRating) {
+  const getSpotAvgRating = (spot) => {
+    if (spot.avgStarRating) {
       return Number(spot.avgStarRating).toFixed(1)
     }
     return 'New';
@@ -98,11 +98,7 @@ const SpotDetails = () => {
           <div className="reviews-container">
             <i className="fas fa-star"></i>
             <span>
-              {spot.avgStarRating
-                ? String(spot.avgStarRating).length === 1
-                  ? Number(spot.avgStarRating).toFixed(1)
-                  : spot.avgStarRating
-                : "New"}
+              {getSpotAvgRating(spot)}
             </span>
             <span>{Number(spot.numReviews) === 0 ? "" : "·"} </span>
             <span>
