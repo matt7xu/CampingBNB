@@ -30,6 +30,7 @@ const CreateSpot = () => {
 
   useEffect(() => {
     // if (toggleSubmit) {
+      console.log("llllll'",price)
     const errorObj = {};
     if (!address) errorObj.address = "Address is required";
     if (!city) errorObj.city = "City is required";
@@ -37,8 +38,11 @@ const CreateSpot = () => {
     if (!country) errorObj.country = "Country is required";
     if (!name) errorObj.name = "Name is required";
     if (!price) errorObj.price = "Price is required";
+    if (isNaN(price)) errorObj.price = "Price must be integer";
     if (!lat) errorObj.lat = "Latitude is required";
+    if (isNaN(lat)) errorObj.lat = "Latitude must be integer";
     if (!lng) errorObj.lng = "Longitude is required";
+    if (isNaN(lng)) errorObj.lng = "Longitude must be integer";
     if (description.length < 30) errorObj.description = "Description needs a minmum of 30 characters";
     if (!previewImage) errorObj.previewImage = "Preview image is required";
     if (previewImage && (checkImage(previewImage))) {
@@ -79,7 +83,7 @@ const CreateSpot = () => {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors(data.errors);
+          setErrors({new:data.errors});
         }
       });
 
@@ -129,20 +133,20 @@ const CreateSpot = () => {
       }
     }
     setErrors({});
-    setCountry('');
-    setAddress('');
-    setCity('');
-    setState('');
-    setLat('');
-    setLng('');
-    setDescription('');
-    setName('');
-    setPrice('');
-    setPreviewImage('');
-    setImage0('');
-    setImage1('');
-    setImage2('');
-    setImage3('');
+    // setCountry('');
+    // setAddress('');
+    // setCity('');
+    // setState('');
+    // setLat('');
+    // setLng('');
+    // setDescription('');
+    // setName('');
+    // setPrice('');
+    // setPreviewImage('');
+    // setImage0('');
+    // setImage1('');
+    // setImage2('');
+    // setImage3('');
 
     if (spot) {
       history.push(`/spots/${spot.id}`);
@@ -155,7 +159,9 @@ const CreateSpot = () => {
         <h1>Create a new Spot</h1>
         <h3>Where's your place located?</h3>
         <p>Guests will only get your exact address once they booked a reservation.</p>
+        {errors.message && <p className="errors">{errors.message}</p>}
       </div>
+
       <form onSubmit={handleSubmit} className="createSpotForm">
         <div className="CountryDiv">
           <label>Country

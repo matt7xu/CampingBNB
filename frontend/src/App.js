@@ -8,7 +8,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
 import Spots from "./components/Spots/index";
 import SpotDetails from "./components/Spots/SpotDetails";
-import CreateSpot from "./components/Spots/createSpot";
+import CreateSpot from "./components/Spots/CreateSpot";
 import ManageSpots from "./components/Spots/ManageSpots";
 import UpdateSpot from "./components/Spots/UpdateSpot";
 
