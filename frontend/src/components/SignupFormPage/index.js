@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -17,7 +19,6 @@ function SignupFormPage() {
   const [toggleSubmit, setToggleSubmit] = useState(false);
 
   useEffect(() => {
-    if (toggleSubmit) {
       const error = {};
       if (username.length < 4) {
         error.username = "Username field is less than 4 characters"
@@ -26,39 +27,34 @@ function SignupFormPage() {
         error.password = "Password field is less than 6 characters"
       }
       if (!email.includes('@')) errors.email = 'Please provide a valid Email';
+
       setErrors(error);
-    }
-  }, [username, password, email, toggleSubmit, errors])
+
+  }, [username, password, email])
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setToggleSubmit(true);
-    if (password === confirmPassword) {
-      setErrors({});
-      return dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password,
-        })
-      ).catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          console.log(Object.values(data.errors[0]))
-          const newError = {
-            new: Object.values(data.errors[0])[0]
-          }
-          setErrors(newError);
-        }
-      });
-    }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+    setErrors({});
+    dispatch(
+      sessionActions.signup({
+        email,
+        username,
+        firstName,
+        lastName,
+        password,
+      })
+    ).catch(async (res) => {
+      const data = await res.json();
+      if (data && data.errors) {
+        setErrors({new:data.errors[0]});
+        return
+      }
     });
+    history.push("/");
+    return;
   };
   return (
     <div className="signupPageDiv">
@@ -71,9 +67,7 @@ function SignupFormPage() {
         {errors.password && <p className="error">{errors.password}</p>}
         {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
         {errors.new && <p className="error">{errors.new}</p>}
-
         <label>
-
           <input
             type="text"
             value={firstName}
@@ -138,7 +132,11 @@ function SignupFormPage() {
           />
         </label>
 
-        <button className="signupSubmitButton" type="submit" disabled={confirmPassword.length < 1}>Sign Up</button>
+        <button className="signupSubmitButton" type="submit" disabled={
+          username.length < 4 ||
+          password.length < 6 ||
+          password !== confirmPassword
+        }>Sign Up</button>
       </form>
     </div>
   );

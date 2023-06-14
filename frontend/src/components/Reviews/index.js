@@ -36,7 +36,7 @@ const Reviews = ({ spot }) => {
       return (
         <DeleteReviewModal review={review} />
       )
-    } 
+    }
   }
 
   return (
@@ -45,7 +45,7 @@ const Reviews = ({ spot }) => {
         <>
           {(user !== null && allReviews.length === 0 && user.id !== spot.Owner.id)
             ? (
-              <div>Be the first to review!</div>
+              <div>Be the first to post a review!</div>
             ) : (
               <div>
                 {sorted.map((each, index) => (

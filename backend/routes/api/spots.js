@@ -403,6 +403,7 @@ router.get(
         }
       });
       each.previewImage = image;
+      // each.previewImage = eachImage.url;
       ret.push(each);
     })
     res.json({

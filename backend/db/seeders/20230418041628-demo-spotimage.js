@@ -37,7 +37,7 @@ module.exports = {
     {
       spotId: 1,
       url: "https://i.imgur.com/rrAPt2v.jpeg",
-      preview: true
+      preview: false
     },
     {
       spotId: 4,

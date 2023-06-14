@@ -291,7 +291,8 @@ const UpdateSpot = () => {
           <input
             type='text'
             onChange={(e) => setPreviewImage(e.target.value)}
-            value={previewImage}
+            value={'http'+ previewImage.split('http')[1]}
+            // value={previewImage}
             placeholder='Preview Image URL'
             name='image'
             className="input-box"

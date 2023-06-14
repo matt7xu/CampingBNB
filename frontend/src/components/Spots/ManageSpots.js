@@ -27,7 +27,7 @@ function ManageSpots({ isLoaded }) {
 
   return (
     <>
-      <h1>Manage Your Spots</h1>
+      <h1>Manage Spots</h1>
       {allSpots.length === 0 && (
         <button onClick={createButtonHandler}>Create a New Spot</button>
       )}

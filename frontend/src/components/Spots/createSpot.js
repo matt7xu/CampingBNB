@@ -261,7 +261,7 @@ const CreateSpot = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             name='body'
-            placeholder='Description'
+            placeholder='Please write at least 30 characters'
             className="DescriptionDiv-box"
           />
           {errors.description && <p className="errors">{errors.description}</p>}

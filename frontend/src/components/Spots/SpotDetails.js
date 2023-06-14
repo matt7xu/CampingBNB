@@ -14,10 +14,6 @@ const SpotDetails = () => {
   const spot = spotsObj[spotId];
   const user = useSelector(state => state.session.user);
 
-  const allReviews = useSelector(state => Object.values(state.reviews).filter(
-    (review) => review.userId === user.id && review.spotId === spot.id
-  ));
-
   useEffect(() => {
     dispatch(
       spotsActions.loadSpotByIdThunk(spotId)
@@ -28,14 +24,21 @@ const SpotDetails = () => {
     alert("Feature coming soon");
   }
 
+  const allReviews = useSelector(state => Object.values(state.reviews));
+
   let pageshowing;
-  if (spot) {
+  if (spot && user) {
     if (spot.Owner) {
       if (spot.Owner.id) {
-        if (user && user.id !== spot.Owner.id && allReviews.length < 1) {
-          pageshowing = (
-            <PostReviewModal spot={spot} />
-          )
+        if (allReviews) {
+          const filteredReview = allReviews.filter(
+            (review) => review.userId === user.id && review.spotId === spot.id
+          );
+          if (user && user.id !== spot.Owner.id && filteredReview.length < 1) {
+            pageshowing = (
+              <PostReviewModal spot={spot} />
+            )
+          }
         }
       }
     }
@@ -52,6 +55,18 @@ const SpotDetails = () => {
     return 'New';
   }
 
+  const showImages = (images) => {
+    let slicedImages = images.slice(0, 5)
+    return slicedImages.map((image, index) => (
+      < img
+        key={`image${image.id}`}
+        className={`image${index}`}
+        src={image.url}
+        alt="building"
+      />
+    ))
+  }
+
   return (
     <>
       {isLoaded && (
@@ -59,14 +74,7 @@ const SpotDetails = () => {
           <h1>{spot.name}</h1>
           <div className="location">{spot.city}, {spot.state}, {spot.country}</div>
           <div className="image-container">
-            {spot.SpotImages.map((image, index) => (
-              < img
-                key={`image${image.id}`}
-                className={`image${index}`}
-                src={image.url}
-                alt="building"
-              />
-            ))}
+            {showImages(spot.SpotImages)}
           </div>
           <div class="hostDescriptionCalloutBox">
             <h2 className="host">{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h2>
@@ -81,7 +89,7 @@ const SpotDetails = () => {
                 <span>
                   {getSpotAvgRating(spot)}
                 </span>
-                <span>{Number(spot.numReviews) === 0 ? "" : "·"} </span>
+                <span>{Number(spot.numReviews) === 0 ? "" : " ·"} </span>
                 <span>
                   {Number(spot.numReviews) === 0
                     ? ""
@@ -100,7 +108,7 @@ const SpotDetails = () => {
             <span>
               {getSpotAvgRating(spot)}
             </span>
-            <span>{Number(spot.numReviews) === 0 ? "" : "·"} </span>
+            <span>{Number(spot.numReviews) === 0 ? "" : " ·"} </span>
             <span>
               {Number(spot.numReviews) === 0
                 ? ""
