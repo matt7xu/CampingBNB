@@ -23,14 +23,12 @@ function PostReview({ spot }) {
     };
 
     const newReview = await dispatch(reviewActions.addReviewThunk(spot, reviewInput))
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
-        }
-      });
 
-    if (newReview) {
+    if(newReview.errors) {
+      setErrors(newReview.errors);
+    }
+
+    if (newReview.id) {
       history.push(`/spots/${spot.id}`);
     };
   };
@@ -56,7 +54,7 @@ function PostReview({ spot }) {
       <button
         className="SubmitReviewButtonDiv"
         type="submit"
-        disabled={review.length < 10 || stars === 1}
+        disabled={review.length < 10 || stars === 0}
       >
         Submit Your Review
       </button>

@@ -74,7 +74,8 @@
 }
 
 .errors {
-  margin-top: 5px;
+  margin: 5px;
+  width: auto;
 }
 
 .DescriptionDiv-box {

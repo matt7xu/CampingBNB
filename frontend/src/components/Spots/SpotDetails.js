@@ -25,6 +25,7 @@ const SpotDetails = () => {
   }
 
   const allReviews = useSelector(state => Object.values(state.reviews));
+console.log('allReviews;:::::::',allReviews)
 
   let pageshowing;
   if (spot && user) {
@@ -49,10 +50,35 @@ const SpotDetails = () => {
   }
 
   const getSpotAvgRating = (spot) => {
-    if (spot.avgStarRating) {
-      return Number(spot.avgStarRating).toFixed(1)
+    const filteredReview = allReviews.filter(
+      (review) => review.spotId === spot.id
+    );
+    if (filteredReview.length > 0) {
+      let ret = 0;
+      for (let i = 0; i < filteredReview.length; i++) {
+        ret += filteredReview[i].stars;
+      }
+      return ret / filteredReview.length
     }
     return 'New';
+  }
+
+  const getReviewNumber = (spot) => {
+    const filteredReview = allReviews.filter(
+      (review) => review.spotId === spot.id
+    );
+    return (
+      <>
+        <span>{Number(filteredReview.length) === 0 ? "" : " ·"} </span>
+        <span>
+          {Number(filteredReview.length) === 0
+            ? ""
+            : Number(filteredReview.length) === 1
+              ? `${filteredReview.length} Review`
+              : `${filteredReview.length} Reviews`}
+        </span>
+      </>
+    )
   }
 
   const showImages = (images) => {
@@ -89,14 +115,10 @@ const SpotDetails = () => {
                 <span>
                   {getSpotAvgRating(spot)}
                 </span>
-                <span>{Number(spot.numReviews) === 0 ? "" : " ·"} </span>
                 <span>
-                  {Number(spot.numReviews) === 0
-                    ? ""
-                    : Number(spot.numReviews) === 1
-                      ? `${spot.numReviews} Review`
-                      : `${spot.numReviews} Reviews`}
+                  {getReviewNumber(spot)}
                 </span>
+
               </div>
               <button className="reserve-button" onClick={handleReserve}>
                 Reserve
@@ -108,13 +130,8 @@ const SpotDetails = () => {
             <span>
               {getSpotAvgRating(spot)}
             </span>
-            <span>{Number(spot.numReviews) === 0 ? "" : " ·"} </span>
             <span>
-              {Number(spot.numReviews) === 0
-                ? ""
-                : Number(spot.numReviews) === 1
-                  ? `${spot.numReviews} Review`
-                  : `${spot.numReviews} Reviews`}
+              {getReviewNumber(spot)}
             </span>
             <div className="postReviewButtonDiv">
               {pageshowing}
