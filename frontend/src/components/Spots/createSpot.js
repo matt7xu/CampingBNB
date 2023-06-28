@@ -30,7 +30,6 @@ const CreateSpot = () => {
 
   useEffect(() => {
     // if (toggleSubmit) {
-      console.log("llllll'",price)
     const errorObj = {};
     if (!address) errorObj.address = "Address is required";
     if (!city) errorObj.city = "City is required";
@@ -83,7 +82,7 @@ const CreateSpot = () => {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors({new:data.errors});
+          setErrors({ new: data.errors });
         }
       });
 
@@ -133,20 +132,6 @@ const CreateSpot = () => {
       }
     }
     setErrors({});
-    // setCountry('');
-    // setAddress('');
-    // setCity('');
-    // setState('');
-    // setLat('');
-    // setLng('');
-    // setDescription('');
-    // setName('');
-    // setPrice('');
-    // setPreviewImage('');
-    // setImage0('');
-    // setImage1('');
-    // setImage2('');
-    // setImage3('');
 
     if (spot) {
       history.push(`/spots/${spot.id}`);
@@ -206,8 +191,9 @@ const CreateSpot = () => {
                   name='city'
                   className="input-box"
                 />
-              </div>
+              </div>,
             </label>
+
             <div className="StateDiv">
 
               <label>Latitude
@@ -221,7 +207,7 @@ const CreateSpot = () => {
                     name='latitude'
                     className="input-box"
                   />
-                </div>
+                </div>,
               </label>
             </div>
           </div>
@@ -290,14 +276,14 @@ const CreateSpot = () => {
           <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
           <label className="PriceLabelDiv">  $  </label>
-            <input
-              type='text'
-              onChange={(e) => setPrice(e.target.value)}
-              value={price}
-              placeholder='Price per night (USD)'
-              name='price'
-              className="input-box"
-            />
+          <input
+            type='text'
+            onChange={(e) => setPrice(e.target.value)}
+            value={price}
+            placeholder='Price per night (USD)'
+            name='price'
+            className="input-box"
+          />
 
           {errors.price && <p className="errors">{errors.price}</p>}
         </div>

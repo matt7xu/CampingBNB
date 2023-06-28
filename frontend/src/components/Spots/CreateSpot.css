@@ -74,7 +74,8 @@
 }
 
 .errors {
-  margin: 5px;
+  display: inline;
+  margin-left: 5px;
   width: auto;
 }
 
@@ -91,4 +92,8 @@
 .UpdateButtonDiv {
 background-color: rgb(248, 59, 59);
 color: white;
+}
+
+.createSpotForm input {
+  margin: 5px;
 }

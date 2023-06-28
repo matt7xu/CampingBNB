@@ -46,12 +46,15 @@ button:hover {
   margin: 3px;
 }
 
-input {
+.login-container input {
   background-color: rgb(188, 188, 246);
   width: 90%;
   display: block;
-  float: left;
   float: right;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  height: 30px;
+  padding-left: 5px;
 }
 
 .loginH1Div {

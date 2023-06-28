@@ -25,7 +25,6 @@ const SpotDetails = () => {
   }
 
   const allReviews = useSelector(state => Object.values(state.reviews));
-console.log('allReviews;:::::::',allReviews)
 
   let pageshowing;
   if (spot && user) {

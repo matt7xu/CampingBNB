@@ -4,7 +4,7 @@ form {
   flex-direction: column;
 }
 
-input {
+.signupPageDiv input {
   margin-bottom: 20px;
   margin-left: 20px;
   height: 30px;
