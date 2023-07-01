@@ -16,7 +16,7 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [toggleSubmit, setToggleSubmit] = useState(false);
+  //const [toggleSubmit, setToggleSubmit] = useState(false);
 
   useEffect(() => {
       const error = {};
@@ -36,7 +36,7 @@ function SignupFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setToggleSubmit(true);
+    //setToggleSubmit(true);
     setErrors({});
     dispatch(
       sessionActions.signup({

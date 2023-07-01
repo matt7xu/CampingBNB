@@ -46,7 +46,7 @@ const Reviews = ({ spot }) => {
                     <div>{each?.User?.firstName}</div>
                     <div>{reviewMonth(each.createdAt)}</div>
                     <div>{each.review}</div>
-                    {user.id === each.userId ?
+                    {user?.id === each.userId ?
                     <DeleteReviewModal review={each} /> : null}
                   </div>
                 ))}
