@@ -54,22 +54,25 @@ function ProfileButton({ user }) {
           <>
             <li>Hello, {user.firstName}</li>
             <li className="emailLi">{user.email}</li>
-          <li className="manageSpotsDiv">
-            <Link to="/owned/spots" style={{color: 'black'}}>Manage Spots</Link>
-          </li>
+            <li className="manageSpotsDiv">
+              <Link to="/owned/spots" style={{ color: 'black', textDecoration: 'none'}}>Manage Spots</Link>
+            </li>
+            <li className="manageReviewsDiv">
+              <Link to="/owned/reviews" style={{ color: 'black' }}>Manage Reviews</Link>
+            </li>
             <li>
               <button className="logoutButton" onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
           <div className="loginSignup">
-          <li>
-            <LoginFormModal />
-          </li>
-          <li>
-            <SignupFormModal />
-          </li>
-        </div>
+            <li>
+              <LoginFormModal />
+            </li>
+            <li>
+              <SignupFormModal />
+            </li>
+          </div>
         )}
       </ul>
     </div>

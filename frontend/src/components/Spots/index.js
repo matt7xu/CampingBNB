@@ -19,7 +19,7 @@ const Spots = () => {
     <>
       <div className="allSpots">
         {reverseOrderSpots.map(spot => (
-          <div className="spotItem">
+          <div className="spotItem" key={spot.id}>
             <Link to={`/spots/${spot.id}`}>
               <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
             </Link>
@@ -27,7 +27,7 @@ const Spots = () => {
               <div>{spot.city}, {spot.state}</div>
               <div>${spot.price} night</div>
               <div>
-                <i class="fas fa-star" />
+                <i className="fas fa-star" />
                 {spot.avgRating !== "0.0"
                   ? spot.avgRating
                   : "New"}

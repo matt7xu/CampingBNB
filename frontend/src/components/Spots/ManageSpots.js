@@ -42,7 +42,7 @@ function ManageSpots({ isLoaded }) {
                 <div>{spot.city}, {spot.state}</div>
                 <div>${spot.price} night</div>
                 <div>
-                  <i class="fas fa-star" />
+                  <i className="fas fa-star" />
                   {spot.avgRating !== "0.0"
                     ? spot.avgRating
                     : "New"}

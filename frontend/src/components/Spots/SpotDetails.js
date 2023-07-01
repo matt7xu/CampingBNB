@@ -101,7 +101,7 @@ const SpotDetails = () => {
           <div className="image-container">
             {showImages(spot.SpotImages)}
           </div>
-          <div class="hostDescriptionCalloutBox">
+          <div className="hostDescriptionCalloutBox">
             <h2 className="host">{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h2>
             <div className="description">{spot.description}</div>
             <div className="calloutBox">

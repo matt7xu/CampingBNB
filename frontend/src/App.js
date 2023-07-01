@@ -11,6 +11,7 @@ import SpotDetails from "./components/Spots/SpotDetails";
 import CreateSpot from "./components/Spots/CreateSpot";
 import ManageSpots from "./components/Spots/ManageSpots";
 import UpdateSpot from "./components/Spots/UpdateSpot";
+import ManageReviews from "./components/Reviews/ManageReviews";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,9 @@ function App() {
           </Route>
           <Route path="/owned/spots">
             <ManageSpots isLoaded={isLoaded} />
+          </Route>
+          <Route path="/owned/reviews">
+            <ManageReviews />
           </Route>
           <Route>
             <h1>Page Not Found</h1>

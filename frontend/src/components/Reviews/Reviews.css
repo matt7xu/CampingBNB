@@ -3,7 +3,18 @@
   color: white;
   box-shadow: 5px 5px #000000;
   height: 30px;
-  margin-top: 10px;
+  width: 70px;
+  margin: 5px;
+}
+
+.updateReviewButtonDiv {
+  background-color: rgb(78, 77, 77);
+  color: white;
+  box-shadow: 5px 5px #000000;
+  height: 30px;
+  width: 70px;
+  margin: 5px;
+  float: left;
 }
 
 .deleteYesbutton {
@@ -25,4 +36,8 @@
 
 .delete-container {
   margin: 20px;
+}
+
+.manageReviewPageDiv {
+  margin-left: 100px;
 }
