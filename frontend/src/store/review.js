@@ -63,11 +63,12 @@ export const addReviewThunk = (spot, reviewInput) => async (dispatch) => {
   });
 
   if (res.ok) {
-    // const newReview = await res.json();
-    //dispatch(postReviewsAction(newReview))
-    const newReview = await dispatch(loadReviewsThunk(spot.id));
+    const newReview = await res.json();
+    dispatch(postReviewsAction(newReview))
+   // const newReview = await dispatch(loadReviewsThunk(spot.id));
     return newReview;
   }
+  return res.json();
 };
 
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {

@@ -31,13 +31,6 @@ const Reviews = ({ spot }) => {
     return month + ' ' + year;
   }
 
-  let deletcReviewButton = (review) => {
-     if (review.User.id === review.userId) {
-      return (
-        <DeleteReviewModal review={review} />
-      )
-    }
-  }
 
   return (
     <>
@@ -50,10 +43,11 @@ const Reviews = ({ spot }) => {
               <div>
                 {sorted.map((each, index) => (
                   <div className="reviews" key={`${index}`}>
-                    <div>{each.User.firstName}</div>
+                    <div>{each?.User?.firstName}</div>
                     <div>{reviewMonth(each.createdAt)}</div>
                     <div>{each.review}</div>
-                    {deletcReviewButton(each)}
+                    {user.id === each.userId ?
+                    <DeleteReviewModal review={each} /> : null}
                   </div>
                 ))}
               </div>
