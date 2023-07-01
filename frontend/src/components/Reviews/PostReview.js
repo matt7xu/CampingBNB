@@ -22,7 +22,7 @@ function PostReview({ spot }) {
       stars,
     };
 
-    const newReview = await dispatch(reviewActions.addReviewThunk(spot, reviewInput))
+    const newReview = dispatch(reviewActions.addReviewThunk(spot, reviewInput))
 
     if(newReview.errors) {
       setErrors(newReview.errors);
