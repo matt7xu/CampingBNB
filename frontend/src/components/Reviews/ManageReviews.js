@@ -41,9 +41,9 @@ function ManageReviews() {
               <p>{reviewMonth(review.createdAt)}</p>
               <p>{review?.review}</p>
               <div>
-                {/* <div>
+                <div>
                   <UpdateReviewModal review={review} />
-                </div> */}
+                </div>
                 <div>
                   <DeleteReviewModal review={review} />
                 </div>

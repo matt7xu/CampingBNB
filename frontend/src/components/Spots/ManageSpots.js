@@ -37,17 +37,18 @@ function ManageSpots({ isLoaded }) {
             <div key={spot.id} className="spot-card">
               <Link to={`/spots/${spot.id}`}>
                 <img className="spotImage" key={spot.id} src={spot.previewImage} alt={spot.description} title={spot.name} />
-              </Link>
-              <div>
-                <div>{spot.city}, {spot.state}</div>
-                <div>${spot.price} night</div>
                 <div>
-                  <i className="fas fa-star" />
-                  {spot.avgRating !== "0.0"
-                    ? spot.avgRating
-                    : "New"}
+                  <div>{spot.city}, {spot.state}</div>
+                  <div>${spot.price} night</div>
+                  <div>
+                    <i className="fas fa-star" />
+                    {spot.avgRating !== "0.0"
+                      ? spot.avgRating
+                      : "New"}
+                  </div>
                 </div>
-              </div>
+              </Link>
+
               <div>
                 <button
                   className="manage-location-update-button"

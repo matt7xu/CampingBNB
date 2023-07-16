@@ -20,12 +20,12 @@ function SignupFormPage() {
 
   useEffect(() => {
       const error = {};
-      if (username.length < 4) {
-        error.username = "Username field is less than 4 characters"
-      }
-      if (password.length < 6) {
-        error.password = "Password field is less than 6 characters"
-      }
+      // if (username.length < 4) {
+      //   error.username = "Username field is less than 4 characters"
+      // }
+      // if (password.length < 6) {
+      //   error.password = "Password field is less than 6 characters"
+      // }
       if (!email.includes('@')) errors.email = 'Please provide a valid Email';
 
       setErrors(error);
@@ -34,11 +34,11 @@ function SignupFormPage() {
 
   if (sessionUser) return <Redirect to="/" />;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //setToggleSubmit(true);
     setErrors({});
-    dispatch(
+    const newUser = await dispatch(
       sessionActions.signup({
         email,
         username,
@@ -49,12 +49,13 @@ function SignupFormPage() {
     ).catch(async (res) => {
       const data = await res.json();
       if (data && data.errors) {
-        setErrors({new:data.errors[0]});
-        return
+        console.log('lllllll', data.errors[0])
+        setErrors(data.errors[0]);
       }
     });
+    if(newUser) {
     history.push("/");
-    return;
+    }
   };
   return (
     <div className="signupPageDiv">
@@ -66,7 +67,7 @@ function SignupFormPage() {
         {errors.lastName && <p className="error">{errors.lastName}</p>}
         {errors.password && <p className="error">{errors.password}</p>}
         {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-        {errors.new && <p className="error">{errors.new}</p>}
+        {/* {errors.new && <p className="error">{errors.new}</p>} */}
         <label>
           <input
             type="text"

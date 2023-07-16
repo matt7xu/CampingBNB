@@ -177,3 +177,12 @@
 input {
   float: left;
 }
+
+.spotTileText :link {
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}

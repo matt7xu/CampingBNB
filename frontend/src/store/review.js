@@ -4,6 +4,7 @@ const LOAD_REVIEWS = "reviews/loadReviews";
 const LOAD_CURRENTUSER_REVIEWS = "reviews/currentUserReviews"
 const POST_REVIEW = "review/postReview"
 const DELETE_REVIEW = "reviews/deleteReview";
+const UPDATE_REVIEW = "reviews/updateReview";
 
 export const loadReviewsAction = (reviews) => {
   return {
@@ -30,6 +31,13 @@ export const deleteReviewAction = (reviewId) => {
   return {
     type: DELETE_REVIEW,
     payload: reviewId,
+  };
+};
+
+export const updateOneReviewAction = (review) => {
+  return {
+    type: UPDATE_REVIEW,
+    payload: review,
   };
 };
 
@@ -65,7 +73,7 @@ export const addReviewThunk = (spot, reviewInput) => async (dispatch) => {
   if (res.ok) {
     const newReview = await res.json();
     dispatch(postReviewsAction(newReview))
-   // const newReview = await dispatch(loadReviewsThunk(spot.id));
+    // const newReview = await dispatch(loadReviewsThunk(spot.id));
     return newReview;
   }
   return res.json();
@@ -82,6 +90,23 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
   }
 };
 
+export const updateReviewThunk =
+  (updatedReview, review, pageType) => async (dispatch) => {
+    const res = await csrfFetch(`/api/reviews/${review.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedReview),
+    });
+
+    if (res.ok) {
+      const review = await res.json();
+      dispatch(updateOneReviewAction(review));
+      return review;
+    }
+  };
+
 const initialState = {};
 
 const reviewReducer = (state = initialState, action) => {
@@ -96,6 +121,7 @@ const reviewReducer = (state = initialState, action) => {
       return newState;
     case LOAD_CURRENTUSER_REVIEWS:
       const allCurrentUserReviews = action.payload.Reviews;
+      newState = {};
       allCurrentUserReviews.forEach((review) => {
         newState[review.id] = review;
       });
@@ -105,6 +131,9 @@ const reviewReducer = (state = initialState, action) => {
       return newState;
     case DELETE_REVIEW:
       delete newState[action.payload];
+      return newState;
+    case UPDATE_REVIEW:
+      newState[action.payload.id] = action.payload;
       return newState;
     default:
       return state;
