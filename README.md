@@ -1,5 +1,5 @@
 # CampingBNB
-Welcome to CampingBNB! Check out our live version here: [[[https://snapple-music.onrender.com/](https://campingbnb.onrender.com)](https://campingbnb.onrender.com))](https://campingbnb.onrender.com)
+Welcome to CampingBNB! Check out our live version here: [[[https://snapple-music.onrender.com/](https://campingbnb.onrender.com)]
 
 CampingBNB is based off AirBNB, which allows user to view, create, book available camping rental
 
