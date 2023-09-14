@@ -48,7 +48,7 @@
 }
 
 .logo {
-  width: 100px;
+  width: 50px;
   margin: auto;
   position: absolute;
 }
@@ -115,4 +115,8 @@ hr {
   border-top: 2px solid #ccc;
   margin: 1em 0;
   padding: 0;
+}
+
+.titleFont {
+  font-family: "Chalkduster", fantasy;
 }

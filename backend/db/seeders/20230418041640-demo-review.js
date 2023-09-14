@@ -22,37 +22,37 @@ module.exports = {
     {
       userId: 1,
       spotId: 1,
-      review: "This was an awesome spot!",
+      review: "Had a great family getaway weekend at Carrie’s location! The little extras were very thoughtful and appreciated. Will definitely be back :)",
       stars: 5,
     },
     {
       userId: 1,
       spotId: 2,
-      review: "This was an so so spot!",
+      review: "We really enjoyed our stay, beautiful surrounding, everything we would need was there",
       stars: 4,
     },
     {
       userId: 2,
       spotId: 3,
-      review: "This was not an awesome spot!",
-      stars: 2,
+      review: "We had a really nice time. Peaceful quiet and the perfect date night.",
+      stars: 3,
     },
     {
       userId: 3,
       spotId: 4,
-      review: "This was not an awesome spot!",
+      review: "Great spot!",
       stars: 1,
     },
     {
       userId: 1,
       spotId: 5,
-      review: "This was not an awesome spot!",
+      review: "The perfect place to unwind. A nice getaway from the city without driving too far. ",
       stars: 3,
     },
     {
       userId: 3,
       spotId: 7,
-      review: "This was not an awesome spot!",
+      review: "ents were great and was nice to have everything already set up and ready. ",
       stars: 2,
     }
   ], {});

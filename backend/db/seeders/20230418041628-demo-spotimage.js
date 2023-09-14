@@ -21,42 +21,42 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: "https://i.imgur.com/rrlHXYa.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661497/pexels-guduru-ajay-bhargav-939723_de4ns5.jpg",
       preview: true
     },
     {
       spotId: 2,
-      url: "https://i.imgur.com/z0QlkHR.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661494/JLCG_tents_Teewinot_2008_mattson_1_gqpdlz.jpg",
       preview: true
     },
     {
       spotId: 3,
-      url: "https://i.imgur.com/oBCDd0Z.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661493/blog_campping_yttepi.jpg",
       preview: true
     },
     {
       spotId: 1,
-      url: "https://i.imgur.com/rrAPt2v.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661493/images_1_w3rbfw.jpg",
       preview: false
     },
     {
       spotId: 4,
-      url: "https://i.imgur.com/onAxK6W.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661480/FamilyCamping-2021-GettyImages-948512452-2_qfuiyu.webp",
       preview: true
     },
     {
       spotId: 5,
-      url: "https://i.imgur.com/jFoufpl.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661480/lake-wenatchee-state-park_HERO_CAMPWA0922-09e49c99f7fd4a3b9238bdfd4475928b_wuapkz.jpg",
       preview: true
     },
     {
       spotId: 6,
-      url: "https://i.imgur.com/ZJ6Iot4.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661479/tent-camping-at-sunset_cezv7n.jpg",
       preview: true
     },
     {
       spotId: 7,
-      url: "https://i.imgur.com/noYHC7C.jpeg",
+      url: "https://res.cloudinary.com/dmdiqj57t/image/upload/v1694661479/images_lcafmb.jpg",
       preview: true
     }
   ], {});

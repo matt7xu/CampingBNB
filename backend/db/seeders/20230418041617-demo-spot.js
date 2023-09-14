@@ -27,9 +27,9 @@ module.exports = {
         country: "United States of America",
         lat: 37.7645358,
         lng: -122.4730327,
-        name: "A Academy",
-        description: "Place where web developers are created",
-        price: 1123,
+        name: "The Loon Tent at Salmonier River Tents",
+        description: "Salmonier River Tents offers a comfortable, unique camping experience",
+        price: 112,
         createdAt: "2021-11-19 20:39:36",
         updatedAt: "2021-11-19 20:39:36"
       },

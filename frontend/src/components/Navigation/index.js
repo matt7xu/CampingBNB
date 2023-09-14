@@ -14,6 +14,9 @@ function Navigation({ isLoaded }) {
       <li className="navLogo">
         <NavLink exact to="/"><img className="logo" src={logo} alt=""></img></NavLink>
       </li>
+
+      <div className="titleFont">CampingBNB</div>
+
       {isLoaded && sessionUser && (
         <li className="navCreate">
           <NavLink to="/spots/new" style={{ color: 'black', textDecoration: 'none' }}>Create a new spot</NavLink>
