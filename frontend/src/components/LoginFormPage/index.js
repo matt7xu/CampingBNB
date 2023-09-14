@@ -42,7 +42,7 @@ const LoginFormPage = () => {
   const demoLogin = (e) => {
     e.preventDefault();
     const demo = {
-      credential: "Demo-lition",
+      credential: "Rubeus",
       password: "password"
     }
     return dispatch(sessionActions.login(demo))
